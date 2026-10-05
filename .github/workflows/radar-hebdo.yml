@@ -25,7 +25,7 @@ jobs:
         run: |
           git config user.name "Radar NSI"
           git config user.email "radar-nsi@users.noreply.github.com"
-          git add web/radar.json
+          git add web/radar.json web/macro_cache.json
           git diff --cached --quiet && echo "Aucun changement." && exit 0
           git commit -m "Radar du $(date +%d/%m/%Y)"
           git push
