@@ -1,0 +1,39 @@
+{
+  "_commentaire": "Seuils de baisse depuis le plus haut 52 semaines, en %. Modifiables ici : le calcul du lundi suivant les prend en compte.",
+  "seuils": {
+    "Actions France": [12, 20, "Actions grandes capitalisations"],
+    "Actions zone euro": [12, 20, "Actions grandes capitalisations"],
+    "Actions Europe": [12, 20, "Actions grandes capitalisations"],
+    "Actions US": [12, 20, "Actions grandes capitalisations"],
+    "Actions internationales": [12, 20, "Actions grandes capitalisations"],
+    "Actions Europe petites & moyennes cap.": [15, 25, "Actions PMC, émergents, Asie"],
+    "Actions émergentes": [15, 25, "Actions PMC, émergents, Asie"],
+    "Actions Asie-Pacifique & Japon": [15, 25, "Actions PMC, émergents, Asie"],
+    "Thématiques tech & santé": [15, 25, "Thématiques"],
+    "Thématiques environnement & infra.": [15, 25, "Thématiques"],
+    "Autres actions sectorielles": [15, 25, "Thématiques"],
+    "Ressources & matières premières": [20, 30, "Or et matières premières"],
+    "Immobilier coté": [12, 22, "Immobilier coté (si taux stables)"],
+    "Diversifiés prudents": [5, 10, "Diversifiés prudents"],
+    "Gestion alternative": [5, 10, "Gestion alternative"],
+    "Diversifiés équilibrés": [10, 15, "Diversifiés équilibrés"],
+    "Diversifiés dynamiques": [10, 18, "Diversifiés dynamiques"],
+    "Diversifiés flexibles": [10, 18, "Diversifiés flexibles"],
+    "Obligations convertibles": [8, 15, "Convertibles (règle provisoire)"],
+    "Obligations émergentes": [6, 10, "Obligations émergentes (règle provisoire)"]
+  },
+  "familles_marche": {
+    "Monétaire": "estr",
+    "Obligations court terme & inflation": "taux",
+    "Obligations EUR & crédit": "taux",
+    "Obligations flexibles": "taux",
+    "Obligations haut rendement": "hy"
+  },
+  "familles_manuelles": ["Immobilier non coté", "Capital investissement"],
+  "marche": {
+    "taux_10ans_favorable": 3.5,
+    "hy_elargissement_4sem": 0.5,
+    "hy_renforcement": 4.5,
+    "hy_cher": 3.0
+  }
+}
