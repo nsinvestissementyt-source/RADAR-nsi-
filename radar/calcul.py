@@ -115,6 +115,9 @@ def fetch_macro() -> tuple[dict[str, pd.Series], list[str]]:
                 print(f"  {k} : {nom} indisponible ({type(e).__name__})")
                 if nom == "FRED":
                     fred_ko = True
+        if s is not None and sid in cache and pd.Timestamp(cache[sid][-1][0]) > s.index[-1]:
+            print(f"  {k} : source moins récente que la dernière valeur connue")
+            s = None
         if s is not None:
             cache[sid] = [[d.strftime("%Y-%m-%d"), float(v)] for d, v in s.items()]
         elif sid in cache:
@@ -158,6 +161,8 @@ def compute(fonds: list[dict], regles: dict, familles: list[str],
             return "neutre", f"Taux 10 ans France à {fr(v)} %."
         if kind == "hy":
             v, c = macro["hy"]["v"], macro["hy"]["chg4w"]
+            if (pd.Timestamp.today() - hy.index[-1]).days > 21:
+                return "neutre", f"Écart de rendement non mis à jour depuis le {hy.index[-1]:%d/%m/%Y} (source indisponible) : signal en attente."
             if v >= MK["hy_renforcement"]:
                 return "renfort", f"Écart de rendement à {fr(v)} pt : niveau de crise, point d'entrée fort."
             if c >= MK["hy_elargissement_4sem"]:
@@ -250,7 +255,7 @@ def compute(fonds: list[dict], regles: dict, familles: list[str],
         FAMS.append(dict(famille=fam, etat=st, msg=msg, regle=lab, zone=z, renfort=r))
 
     EVENTS.sort(key=lambda e: e["date"], reverse=True)
-    asof = max(f.get("last", "") for f in FUNDS)
+    asof = min(max(f.get("last", "") for f in FUNDS), dt.date.today().isoformat())
     return dict(asof=asof, macro=macro, fams=FAMS, funds=FUNDS, events=EVENTS, manquants=MANQUANTS,
                 calcule_le=dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"))
 
