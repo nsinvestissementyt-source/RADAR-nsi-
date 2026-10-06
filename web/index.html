@@ -135,7 +135,7 @@ header.top img{width:36px;height:auto}
 
 <footer><div class="wrap">
   <div><h4>Comment sont choisis les fonds</h4>
-    <p style="margin:0">Chaque poche reprend la répartition du modèle NSI. Le fonds retenu est le n°1 du classement de sa famille (performance 5 ans, régularité, résistance aux baisses, frais). Cliquez sur une ligne pour voir les n°2 et n°3, utilisables en alternative.</p></div>
+    <p style="margin:0">Chaque poche reprend la répartition du modèle NSI. Le fonds retenu est le mieux noté de sa poche (performance 5 ans, régularité, résistance aux baisses, frais). Cliquez sur une ligne pour voir les alternatives : uniquement des fonds notés 80/100 ou plus, du mieux noté au moins bien noté.</p></div>
   <div><h4>Lecture de l'état radar</h4>
     <ul><li><b>Point d'entrée</b> : moment favorable pour renforcer la poche.</li><li><b>À surveiller</b> : baisse en cours, proche du seuil.</li><li><b>Prudence</b> / <b>suspendu</b> : différer les nouveaux versements sur cette poche.</li></ul></div>
   <div><h4>Avertissement</h4>
@@ -147,16 +147,16 @@ const CAT={euro:["Fonds en euros","var(--c-euro)"],att:["Fonds d'attente","var(-
 const CAT_HEX={euro:"#378ADD",att:"#5DCAA5",ps:"#E58A3C",obl:"#6A60C9",div:"#C9A84C",immo:"#1D9E75",act:"#D85A30"};
 const SLOTS={
   euro:{cat:"euro",fixed:"Fonds en euros Swiss Life",fixedSub:"Capital garanti, rendement selon contrat",sri:1},
-  att:{cat:"att",fam:"Obligations court terme & inflation",role:"Poche d'attente, arbitrable vers les UC en cas de baisse"},
+  att:{cat:"att",fam:"Obligations court terme & inflation",pool:["Obligations court terme & inflation","Monétaire"],role:"Poche d'attente, arbitrable vers les UC en cas de baisse"},
   ps:{cat:"ps",fixed:"Produit structuré",fixedSub:"À sélectionner selon les conditions de marché au moment du versement",sri:3},
-  em:{cat:"obl",fam:"Obligations émergentes",role:"Rendement obligataire"},
-  abs:{cat:"obl",fam:"Gestion alternative",role:"Décorrélateur"},
-  immo:{cat:"immo",fam:"Immobilier non coté",role:"Revenus réguliers",force:{isin:"FR0014007X71",nom:"ESG Tendances Pierre P",sg:"Swiss Life AM",sri:3,devise:"EUR",note:null,perfLab:"3 ans",net5:5.6,p2025:5.62,pire:5.11,frais:3.2,why:"Choix NSI · société civile immobilière, historique de 3 ans (non classée)"}},
-  mix:{cat:"div",fam:"Diversifiés flexibles",role:"Allocation flexible"},
-  eu:{cat:"act",fam:"Actions Europe",role:"Cœur actions"},
-  monde:{cat:"act",fam:"Actions internationales",role:"Diversification mondiale"},
-  emact:{cat:"act",fam:"Actions émergentes",role:"Moteur de croissance"},
-  tech:{cat:"act",fam:"Thématiques tech & santé",role:"Thématique de long terme"}
+  em:{cat:"obl",fam:"Obligations émergentes",pool:["Obligations émergentes","Obligations EUR & crédit","Obligations flexibles","Obligations haut rendement"],role:"Rendement obligataire"},
+  abs:{cat:"obl",fam:"Gestion alternative",pool:["Gestion alternative"],role:"Décorrélateur"},
+  immo:{cat:"immo",fam:"Immobilier non coté",pool:["Immobilier non coté","Immobilier coté"],role:"Revenus réguliers",force:{isin:"FR0014007X71",nom:"ESG Tendances Pierre P",sg:"Swiss Life AM",sri:3,devise:"EUR",note:null,perfLab:"3 ans",net5:5.6,p2025:5.62,pire:5.11,frais:3.2,why:"Choix NSI · société civile immobilière, historique de 3 ans (non classée)"}},
+  mix:{cat:"div",fam:"Gestion alternative",pool:["Diversifiés flexibles","Diversifiés prudents","Diversifiés équilibrés","Diversifiés dynamiques","Gestion alternative"],role:"Performance absolue, actions couvertes",force:{isin:"IE00BLP5S460",nom:"Jupiter Merian Glb Eq Abs Rt L € H Acc",sg:"Jupiter AM",sri:2,devise:"EUR",note:93,net5:10.89,p2025:13.67,pire:7.61,frais:2.03,why:"Choix NSI · Gestion alternative · n°1 sur 19"}},
+  eu:{cat:"act",fam:"Actions Europe",pool:["Actions Europe","Actions zone euro","Actions France","Actions Europe petites & moyennes cap."],role:"Cœur actions"},
+  monde:{cat:"act",fam:"Actions internationales",pool:["Actions internationales","Actions US"],role:"Diversification mondiale"},
+  emact:{cat:"act",fam:"Actions émergentes",pool:["Actions émergentes","Actions Asie-Pacifique & Japon"],role:"Moteur de croissance"},
+  tech:{cat:"act",fam:"Thématiques tech & santé",pool:["Thématiques tech & santé","Thématiques environnement & infra.","Autres actions sectorielles"],role:"Thématique de long terme"}
 };
 const PROFILES={
   s:{label:"Sécuritaire",c:"#378ADD",target:"Rendement cible 3,5 à 5 %",desc:"Capital préservé : 85 % de supports défensifs, un décorrélateur et une petite poche immobilière.",
@@ -170,6 +170,22 @@ const PROFILES={
   o:{label:"Offensif",c:"#E24B4A",target:"Rendement cible 10 à 15 %",desc:"85 % d'actions, horizon de 10 ans et plus. La poche d'attente sert aux renforcements.",
      capital:{att:10,ps:5,eu:21,monde:21,emact:22,tech:21},dca:{eu:25,monde:25,emact:25,tech:25}}
 };
+// Fonds notés 80/100 ou plus, par famille (classement annuel). Seuls ces fonds sont proposés en alternative.
+const NOTE_MIN=80;
+const F80={"Obligations court terme & inflation":[{"isin":"FR0010914358","nom":"SLF (F) Bond ESG 6M P","sg":"Swiss Life AM","sri":1,"devise":"EUR","rang":1,"note":84,"n":5,"net5":1.83,"p2025":2.49,"pire":-0.59,"frais":0.5}],"Obligations EUR & crédit":[{"isin":"LU1608101579","nom":"Pareto Nordic Corporate Bond A EUR","sg":"Pareto Asset Management AS","sri":2,"devise":"EUR","rang":1,"note":87,"n":26,"net5":4.82,"p2025":5.66,"pire":-2.4,"frais":1.27},{"isin":"FR0010752543","nom":"Lazard Credit Fi SRI RVC EUR","sg":"Lazard Frères Gestion","sri":2,"devise":"EUR","rang":2,"note":80,"n":26,"net5":2.98,"p2025":6.06,"pire":-10.35,"frais":1.26}],"Obligations flexibles":[{"isin":"FR0011147594","nom":"Omnibond R","sg":"Flornoy Ferri","sri":2,"devise":"EUR","rang":1,"note":84,"n":23,"net5":5.08,"p2025":5.78,"pire":-7.07,"frais":1.39},{"isin":"LU1164219682","nom":"AXAWF Euro Credit Total Ret A Cap EUR","sg":"BNP Paribas","sri":2,"devise":"EUR","rang":2,"note":80,"n":23,"net5":4.06,"p2025":3.77,"pire":-4.15,"frais":1.29}],"Obligations haut rendement":[{"isin":"LU1670722161","nom":"M&G (Lux) Glb Fl Rt HY A H EUR Acc","sg":"M&G Group","sri":2,"devise":"EUR","rang":1,"note":83,"n":12,"net5":4.34,"p2025":3.09,"pire":-3.31,"frais":1.21}],"Obligations convertibles":[{"isin":"FR0010191908","nom":"Ecofi Convertibles Europe C","sg":"Ecofi Investissements","sri":3,"devise":"EUR","rang":1,"note":91,"n":7,"net5":2.74,"p2025":16.44,"pire":-12.75,"frais":1.18}],"Gestion alternative":[{"isin":"IE00BLP5S460","nom":"Jupiter Merian Glb Eq Abs Rt L € H Acc","sg":"Jupiter AM","sri":2,"devise":"EUR","rang":1,"note":93,"n":19,"net5":10.89,"p2025":13.67,"pire":7.61,"frais":2.03}],"Diversifiés prudents":[{"isin":"LU0284394235","nom":"DNCA Invest Eurose A EUR","sg":"DNCA Finance","sri":2,"devise":"EUR","rang":1,"note":88,"n":34,"net5":4.53,"p2025":7.81,"pire":-3.22,"frais":1.51},{"isin":"FR0011668730","nom":"Mandarine Solution R","sg":"Mandarine Gestion","sri":3,"devise":"EUR","rang":2,"note":81,"n":34,"net5":5.0,"p2025":8.61,"pire":-5.28,"frais":1.92}],"Diversifiés flexibles":[{"isin":"FR0011153014","nom":"Ginjer Actifs 360 A","sg":"Ginjer AM","sri":4,"devise":"EUR","rang":1,"note":87,"n":62,"net5":11.39,"p2025":25.72,"pire":-8.12,"frais":1.86},{"isin":"LU1100076550","nom":"Clartan Valeurs C","sg":"Clartan Associés","sri":4,"devise":"EUR","rang":2,"note":85,"n":62,"net5":10.63,"p2025":22.31,"pire":-6.16,"frais":2.2},{"isin":"FR0011261197","nom":"R-co Valor F EUR","sg":"Rothschild & Co AM","sri":4,"devise":"EUR","rang":3,"note":84,"n":62,"net5":9.31,"p2025":15.79,"pire":-8.38,"frais":2.01},{"isin":"FR0010147603","nom":"Carmignac Investissement Lat A EUR Acc","sg":"Carmignac Gestion","sri":3,"devise":"EUR","rang":4,"note":80,"n":62,"net5":6.9,"p2025":16.93,"pire":-6.23,"frais":2.13}],"Diversifiés dynamiques":[{"isin":"LU0068578508","nom":"First Eagle Amundi International AU-C","sg":"First Eagle Investment Management, LLC","sri":3,"devise":"USD","rang":1,"note":85,"n":22,"net5":9.98,"p2025":10.83,"pire":-2.88,"frais":2.36}],"Actions France":[{"isin":"FR0010143545","nom":"HSBC Actions Patrimoine AC","sg":"HSBC","sri":4,"devise":"EUR","rang":1,"note":86,"n":26,"net5":9.3,"p2025":16.3,"pire":-9.17,"frais":1.59},{"isin":"LU0131510165","nom":"Indépendance AM - France Small & midA(C)","sg":"Indépendance AM","sri":4,"devise":"EUR","rang":2,"note":83,"n":26,"net5":10.24,"p2025":22.92,"pire":-9.55,"frais":2.43}],"Actions zone euro":[{"isin":"LU0165074666","nom":"HSBC GIF Euroland Value AC","sg":"HSBC","sri":4,"devise":"EUR","rang":1,"note":88,"n":20,"net5":13.85,"p2025":30.51,"pire":-7.92,"frais":1.93},{"isin":"FR0010632364","nom":"Oddo BHF Métropole Euro CRw EUR","sg":"Oddo BHF AM","sri":4,"devise":"EUR","rang":2,"note":84,"n":20,"net5":11.43,"p2025":23.66,"pire":-7.54,"frais":1.87}],"Actions Europe":[{"isin":"LU1670707527","nom":"M&G (Lux) Eurp Strat Val A EUR Acc","sg":"M&G Group","sri":4,"devise":"EUR","rang":1,"note":93,"n":63,"net5":17.06,"p2025":31.95,"pire":1.78,"frais":1.86},{"isin":"LU0048588080","nom":"Fidelity Nordic A-Dis-SEK","sg":"Fidelity","sri":4,"devise":"SEK","rang":2,"note":86,"n":63,"net5":12.91,"p2025":30.13,"pire":-4.7,"frais":2.0},{"isin":"LU0072462186","nom":"BGF European Value A2","sg":"BlackRock","sri":4,"devise":"EUR","rang":3,"note":83,"n":63,"net5":12.86,"p2025":23.79,"pire":-4.66,"frais":2.12},{"isin":"FR0007078811","nom":"Oddo BHF Métropole Sélection CRw EUR","sg":"Oddo BHF AM","sri":4,"devise":"EUR","rang":4,"note":82,"n":63,"net5":10.88,"p2025":18.48,"pire":-5.95,"frais":1.92},{"isin":"FR0010586024","nom":"Lazard Dividend C","sg":"Lazard Frères Gestion","sri":4,"devise":"EUR","rang":5,"note":81,"n":63,"net5":10.39,"p2025":29.05,"pire":-5.27,"frais":1.41},{"isin":"LU0524465977","nom":"Alken European Opportunities A","sg":"AFFM SA","sri":4,"devise":"EUR","rang":6,"note":80,"n":63,"net5":20.21,"p2025":54.33,"pire":6.35,"frais":2.75}],"Actions Europe petites & moyennes cap.":[{"isin":"LU1366712435","nom":"DNCA Invest Archer Mid-Cap Europe A EUR","sg":"DNCA Finance","sri":4,"devise":"EUR","rang":1,"note":85,"n":25,"net5":8.03,"p2025":17.07,"pire":-18.01,"frais":1.88},{"isin":"FR0013333580","nom":"Tailor Actions Entrepreneurs C","sg":"Tailor AM","sri":4,"devise":"EUR","rang":2,"note":81,"n":25,"net5":13.76,"p2025":49.64,"pire":-15.97,"frais":5.08},{"isin":"LU1120754533","nom":"Placeuro Abacus Discovery R","sg":"DEN-AM","sri":3,"devise":"EUR","rang":3,"note":80,"n":25,"net5":8.15,"p2025":25.3,"pire":-27.06,"frais":0.39}],"Actions internationales":[{"isin":"LU1897556517","nom":"Groupama Global Disruption NC","sg":"Groupama AM","sri":5,"devise":"EUR","rang":1,"note":90,"n":33,"net5":15.24,"p2025":10.89,"pire":-16.47,"frais":1.88}],"Actions US":[{"isin":"FR0010501858","nom":"CPR Actions USA Responsable P","sg":"CPR AM","sri":4,"devise":"EUR","rang":1,"note":92,"n":20,"net5":14.04,"p2025":4.93,"pire":-10.38,"frais":1.48},{"isin":"FR0000447807","nom":"AXA Amérique Actions AC","sg":"BNP Paribas","sri":4,"devise":"EUR","rang":2,"note":83,"n":20,"net5":13.41,"p2025":4.09,"pire":-12.05,"frais":1.66}],"Actions émergentes":[{"isin":"FR0010241240","nom":"HMG Globetrotter C","sg":"HMG Finance","sri":3,"devise":"EUR","rang":1,"note":83,"n":22,"net5":11.42,"p2025":15.17,"pire":-2.11,"frais":2.24},{"isin":"LU0708055370","nom":"HSBC GIF Frontier Markets ACEUR","sg":"HSBC","sri":4,"devise":"EUR","rang":3,"note":81,"n":22,"net5":18.74,"p2025":7.51,"pire":-2.84,"frais":2.31},{"isin":"LU0164881194","nom":"HSBC GIF Indian Equity AC","sg":"HSBC","sri":4,"devise":"USD","rang":2,"note":81,"n":22,"net5":10.71,"p2025":-9.46,"pire":-9.46,"frais":1.94}],"Actions Asie-Pacifique & Japon":[{"isin":"LU1670618187","nom":"M&G (Lux) Asian A EUR Acc","sg":"M&G Group","sri":4,"devise":"EUR","rang":1,"note":95,"n":10,"net5":11.23,"p2025":21.19,"pire":-3.47,"frais":1.97}],"Autres actions sectorielles":[{"isin":"LU1876459303","nom":"Axiom European Banks Equity RC EUR(v)","sg":"Axiom Alternative Investments","sri":5,"devise":"EUR","rang":1,"note":86,"n":11,"net5":37.27,"p2025":63.1,"pire":0.7,"frais":4.0},{"isin":"FR0011069137","nom":"RMM Actions USA H EUR","sg":"Rothschild & Co AM","sri":4,"devise":"EUR","rang":2,"note":80,"n":11,"net5":9.63,"p2025":13.76,"pire":-22.32,"frais":1.73}],"Thématiques environnement & infra.":[{"isin":"LU2145461757","nom":"Robeco Smart Energy D-EUR Cap","sg":"Robeco","sri":5,"devise":"EUR","rang":1,"note":87,"n":23,"net5":9.44,"p2025":23.5,"pire":-16.41,"frais":1.92}],"Ressources & matières premières":[{"isin":"FR0007001581","nom":"R-co Gold Mining C","sg":"Rothschild & Co AM","sri":5,"devise":"EUR","rang":1,"note":82,"n":10,"net5":21.48,"p2025":122.22,"pire":-7.32,"frais":2.03},{"isin":"FR0010011171","nom":"AXA Or et Matières Premières C","sg":"BNP Paribas","sri":5,"devise":"EUR","rang":2,"note":82,"n":10,"net5":20.6,"p2025":76.63,"pire":-2.13,"frais":1.63}],"Capital investissement":[{"isin":"FR0013202108","nom":"Nextstage Croissance","sg":"NextStage AM","sri":6,"devise":"EUR","rang":1,"note":86,"n":4,"net5":12.44,"p2025":15.57,"pire":2.81,"frais":3.27}]};
+function choisir(sl,pris){
+  const cand=sl.pool.flatMap(fm=>(F80[fm]||[]).map(f=>({...f,fam:fm}))).sort((a,b)=>b.note-a.note);
+  let main=null;
+  if(sl.force) main={...sl.force,fam:sl.fam};
+  else{
+    // Le mieux noté de la poche. À 3 points près, on garde la famille d'origine pour respecter la répartition.
+    const p=((TOP&&TOP.familles[sl.fam])||[])[0], best=cand.find(f=>!pris.has(f.isin));
+    if(p&&p.note>=NOTE_MIN&&!pris.has(p.isin)&&(!best||p.note>=best.note-3)) main={...p,fam:sl.fam};
+    else main=best||(p?{...p,fam:sl.fam}:null);
+  }
+  const alts=cand.filter(f=>f.note>=NOTE_MIN&&(!main||f.isin!==main.isin)&&!pris.has(f.isin)).slice(0,3);
+  return {main,alts};
+}
 const LAB={renfort:"Renforcement",zone:"Point d'entrée",favorable:"Contexte favorable",surveiller:"À surveiller",prudence:"Prudence",suspendu:"Signal suspendu",neutre:"Neutre",manuel:"Suivi manuel",macro:"Suivi marché",none:"Non suivi"};
 const chip=s=>`<span class="chip s-${s}">${LAB[s]||s}</span>`;
 const fr=(v,d=1)=>v==null?"–":v.toFixed(d).replace(".",",");
@@ -209,12 +225,14 @@ function render(){
   $("#pname").textContent=P.label; $("#ptarget").textContent=P.target; $("#pdesc").textContent=P.desc;
   $("#legend").innerHTML=Object.entries(d.by).map(([c,w])=>`<div><i style="background:${CAT_HEX[c]}"></i><span>${CAT[c][0]}</span><b>${w} %</b></div>`).join("");
   // risk
-  let tot=0,s=0; const rows={};
+  let tot=0,s=0; const rows={}, pris=new Set(), CH={};
+  const ordre=Object.keys(alloc).sort((a,b)=>(SLOTS[b].force?1:0)-(SLOTS[a].force?1:0));
+  for(const k of ordre){ const sl=SLOTS[k]; if(sl.fixed) continue; CH[k]=choisir(sl,pris); if(CH[k].main) pris.add(CH[k].main.isin); }
+  for(const k of Object.keys(CH)) CH[k].alts=CH[k].alts.filter(a=>!pris.has(a.isin));
   for(const [k,w] of Object.entries(alloc)){
-    const sl=SLOTS[k]; let f=null;
-    if(sl.force) f=sl.force; else if(sl.fam){const list=(TOP&&TOP.familles[sl.fam])||[]; f=list[0]||null;}
+    const sl=SLOTS[k]; const f=sl.fixed?null:CH[k].main;
     const sri=sl.fixed?sl.sri:(f?f.sri:4); s+=w*sri; tot+=w;
-    (rows[sl.cat]=rows[sl.cat]||[]).push({k,w,sl,f});
+    (rows[sl.cat]=rows[sl.cat]||[]).push({k,w,sl,f,alts:sl.fixed?[]:CH[k].alts});
   }
   const srim=s/tot; $("#sriv").textContent=fr(srim,1)+" / 7"; $("#srid").style.left=((srim-1)/6*100)+"%";
   // categories
@@ -222,15 +240,14 @@ function render(){
   for(const c of Object.keys(CAT)){ const list=rows[c]; if(!list) continue;
     const sum=list.reduce((a,b)=>a+b.w,0);
     html+=`<div class="cat"><h3><i style="background:${CAT_HEX[c]}"></i>${CAT[c][0]}<span>${sum} %</span></h3>`;
-    for(const {k,w,sl,f} of list.sort((a,b)=>b.w-a.w)){
+    for(const {k,w,sl,f,alts} of list.sort((a,b)=>b.w-a.w)){
       if(sl.fixed||!f){ html+=`<div class="fund fixed"><div class="w">${w} %</div><div><div class="nm">${esc(sl.fixed||sl.fam)}</div><div class="meta">${esc(sl.fixedSub||"Aucun fonds classé dans cette famille")}</div></div><div></div></div>`; continue; }
-      const id=k, op=st.open.has(id), stt=fundState(f.isin,sl.fam);
-      const alts=sl.force?(TOP.familles[sl.fam]||[]):(TOP.familles[sl.fam]||[]).slice(1);
+      const id=k, op=st.open.has(id), stt=fundState(f.isin,f.fam||sl.fam);
       html+=`<div class="fund" tabindex="0" data-o="${id}" aria-expanded="${op}"><div class="w">${w} %</div>
-        <div style="min-width:0"><div class="nm">${esc(f.nom)}</div><div class="meta">${esc(sl.role)} · ${f.why?esc(f.why):`${esc(sl.fam)} · n°1 sur ${f.n}`}${f.devise&&f.devise!=="EUR"?` · ${f.devise}`:""}</div></div>
+        <div style="min-width:0"><div class="nm">${esc(f.nom)}</div><div class="meta">${esc(sl.role)} · ${f.why?esc(f.why):`${esc(f.fam)} · n°${f.rang} sur ${f.n}`}${f.devise&&f.devise!=="EUR"?` · ${f.devise}`:""}</div></div>
         <div class="right"><div class="note">${f.note==null?"Choix NSI":`${f.note}<small> / 100</small>`}</div>${stt?chip(stt):""}</div>
         <div class="figs"><span>${f.perfLab||"5 ans"} <strong class="${cls(f.net5)}">${pct(f.net5)}</strong>/an</span><span>2025 <strong class="${cls(f.p2025)}">${pct(f.p2025)}</strong></span><span>Pire année <strong class="${cls(f.pire)}">${pct(f.pire)}</strong></span><span>Frais <strong>${fr(f.frais,2)} %</strong></span><span>SRI <strong>${f.sri}</strong></span></div>
-        ${op?`<div class="alts"><div><span>ISIN <span class="isin">${f.isin}</span> · ${esc(f.sg)}</span></div>${alts.map(a=>`<div><span><b>Alternative n°${a.rang}</b> : ${esc(a.nom)} (${esc(a.sg)})</span><span>note ${a.note} · 5 ans ${pct(a.net5)}/an · SRI ${a.sri} ${chip(fundState(a.isin,sl.fam)||"none")}</span></div>`).join("")}</div>`:""}
+        ${op?`<div class="alts"><div><span>ISIN <span class="isin">${f.isin}</span> · ${esc(f.sg)}</span></div>${alts.length?alts.map((a,i)=>`<div><span><b>Alternative ${i+1}</b> : ${esc(a.nom)} (${esc(a.sg)}) · ${esc(a.fam)}</span><span>note <b>${a.note}</b> · 5 ans ${pct(a.net5)}/an · SRI ${a.sri} ${chip(fundState(a.isin,a.fam)||"none")}</span></div>`).join(""):`<div><span>Aucun autre fonds noté ${NOTE_MIN}/100 ou plus pour cette poche : le fonds retenu reste le meilleur choix.</span></div>`}</div>`:""}
       </div>`;
     }
     html+=`</div>`;
