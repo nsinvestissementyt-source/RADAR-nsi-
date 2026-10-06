@@ -94,6 +94,18 @@ def fetch_ecb(series_id: str) -> pd.Series:
     return pd.Series(df.OBS_VALUE.astype(float).values, index=pd.to_datetime(df.TIME_PERIOD)).sort_index()
 
 
+def fetch_eurostat(series_id: str) -> pd.Series:
+    """Indice des prix zone euro (base 2015) publié par Eurostat, à jour chaque mois."""
+    r = requests.get("https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/prc_hicp_minr",
+                     params={"geo": "EA", "coicop18": "TOTAL", "unit": "I15", "sinceTimePeriod": "2017-01"},
+                     headers=UA, timeout=(10, 60))
+    r.raise_for_status()
+    j = r.json()
+    pos = {v: k for k, v in j["dimension"]["time"]["category"]["index"].items()}
+    vals = {pd.Timestamp(pos[int(i)] + "-01"): float(v) for i, v in j["value"].items()}
+    return pd.Series(vals).sort_index()
+
+
 MACRO_CACHE = ROOT / "web" / "macro_cache.json"
 
 
@@ -102,11 +114,16 @@ def fetch_macro() -> tuple[dict[str, pd.Series], list[str]]:
     cache = json.loads(MACRO_CACHE.read_text("utf-8")) if MACRO_CACHE.exists() else {}
     out, en_cache, fred_ko = {}, [], False
     for k, sid in FRED_IDS.items():
-        sources = ([("BCE", fetch_ecb)] if sid in ECB_KEYS else []) + ([] if fred_ko else [("FRED", fetch_fred)])
+        sources = (([("Eurostat", fetch_eurostat)] if k == "hicp" else []) + ([("BCE", fetch_ecb)] if sid in ECB_KEYS else [])
+                   + ([] if fred_ko else [("FRED", fetch_fred)]))
         s = None
         for nom, fn in sources:
             try:
                 s = fn(sid)
+                if sid in cache and s.index[-1] < pd.Timestamp(cache[sid][-1][0]):
+                    print(f"  {k} : {nom} moins à jour ({s.index[-1].date()})")
+                    s = None
+                    continue
                 if len(s) > 10:
                     print(f"  {k} : {nom} OK ({s.index[-1].date()})")
                     break
