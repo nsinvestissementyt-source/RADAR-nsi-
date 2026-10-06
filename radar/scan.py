@@ -26,7 +26,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 UA = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36"}
 POIDS = {"perf36": 0.35, "regul": 0.25, "mdd": 0.15, "frais": 0.15, "perf12": 0.10}
-MARGE = 5          # points de note glissante d'avance exigés pour un challenger
+MARGE = 15         # points de note glissante d'avance exigés pour un challenger
 NOUVEL_ESSAI = 90  # jours avant de rechercher à nouveau un fonds introuvable
 
 
@@ -123,12 +123,13 @@ def alertes(familles: dict) -> tuple[list, list]:
         seuil = min(f["note"] for f in top)
         for f in lst:
             hors_top = not f["rang_annuel"] or f["rang_annuel"] > 3
-            if hors_top and f["rang"] <= 3 and f["note"] >= seuil + MARGE:
+            if hors_top and f["rang"] <= 2 and f["note"] >= seuil + MARGE:
                 chall.append(dict(f, famille=fam, ecart=f["note"] - seuil,
                                   devance=min(top, key=lambda x: x["note"])["nom"]))
+                break  # un seul challenger par famille : le mieux classé
         if len(lst) >= 6:
             for f in top:
-                if f["rang"] > 5:
+                if f["rang"] > len(lst) / 2:
                     decr.append(dict(f, famille=fam))
     chall.sort(key=lambda x: -x["ecart"])
     return chall, decr
