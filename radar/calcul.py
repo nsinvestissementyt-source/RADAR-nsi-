@@ -67,40 +67,61 @@ def fetch_yahoo(symbol: str) -> pd.Series | None:
 
 
 def fetch_fred(series_id: str) -> pd.Series:
-    """Série FRED, avec 3 essais (le site répond parfois lentement aux serveurs de GitHub)."""
-    last = None
-    for essai in range(3):
-        try:
-            r = requests.get("https://fred.stlouisfed.org/graph/fredgraph.csv",
-                             params={"id": series_id, "cosd": "2017-01-01"}, headers=UA, timeout=(15, 120))
-            r.raise_for_status()
-            df = pd.read_csv(io.StringIO(r.text))
-            df.columns = ["date", "v"]
-            df = df[df.v.astype(str) != "."]
-            return pd.Series(df.v.astype(float).values, index=pd.to_datetime(df.date))
-        except Exception as e:  # noqa: BLE001
-            last = e
-            print(f"  FRED {series_id} essai {essai + 1}/3 : {e}")
-            time.sleep(10 * (essai + 1))
-    raise RuntimeError(f"FRED {series_id} injoignable : {last}")
+    """Série FRED (un seul essai court : FRED bloque parfois les serveurs de GitHub)."""
+    r = requests.get("https://fred.stlouisfed.org/graph/fredgraph.csv",
+                     params={"id": series_id, "cosd": "2017-01-01"}, headers=UA, timeout=(10, 40))
+    r.raise_for_status()
+    df = pd.read_csv(io.StringIO(r.text))
+    df.columns = ["date", "v"]
+    df = df[df.v.astype(str) != "."]
+    return pd.Series(df.v.astype(float).values, index=pd.to_datetime(df.date))
+
+
+# Séries équivalentes publiées par la BCE (API publique, sans clé)
+ECB_KEYS = {
+    "IRLTLT01FRM156N": "IRS/M.FR.L.L40.CI.0000.EUR.N.Z",       # taux 10 ans France
+    "ECBESTRVOLWGTTRMDMNRT": "EST/B.EU000A2X2A25.WT",          # €STR
+    "CP0000EZ19M086NEST": "ICP/M.U2.N.000000.4.INX",           # indice des prix zone euro
+}
+
+
+def fetch_ecb(series_id: str) -> pd.Series:
+    r = requests.get(f"https://data-api.ecb.europa.eu/service/data/{ECB_KEYS[series_id]}",
+                     params={"format": "csvdata", "startPeriod": "2017-01-01"}, headers=UA, timeout=(10, 60))
+    r.raise_for_status()
+    df = pd.read_csv(io.StringIO(r.text))
+    df = df[["TIME_PERIOD", "OBS_VALUE"]].dropna()
+    return pd.Series(df.OBS_VALUE.astype(float).values, index=pd.to_datetime(df.TIME_PERIOD)).sort_index()
 
 
 MACRO_CACHE = ROOT / "web" / "macro_cache.json"
 
 
 def fetch_macro() -> tuple[dict[str, pd.Series], list[str]]:
-    """Données de marché. Si FRED ne répond pas, reprend la dernière valeur connue (web/macro_cache.json)."""
+    """Données de marché : BCE d'abord, FRED ensuite, sinon dernière valeur connue (web/macro_cache.json)."""
     cache = json.loads(MACRO_CACHE.read_text("utf-8")) if MACRO_CACHE.exists() else {}
-    out, en_cache = {}, []
+    out, en_cache, fred_ko = {}, [], False
     for k, sid in FRED_IDS.items():
-        try:
-            s = fetch_fred(sid)
+        sources = ([("BCE", fetch_ecb)] if sid in ECB_KEYS else []) + ([] if fred_ko else [("FRED", fetch_fred)])
+        s = None
+        for nom, fn in sources:
+            try:
+                s = fn(sid)
+                if len(s) > 10:
+                    print(f"  {k} : {nom} OK ({s.index[-1].date()})")
+                    break
+                s = None
+            except Exception as e:  # noqa: BLE001
+                print(f"  {k} : {nom} indisponible ({type(e).__name__})")
+                if nom == "FRED":
+                    fred_ko = True
+        if s is not None:
             cache[sid] = [[d.strftime("%Y-%m-%d"), float(v)] for d, v in s.items()]
-        except Exception as e:  # noqa: BLE001
-            if sid not in cache:
-                raise
-            print(f"  {e} -> dernière valeur connue utilisée")
+        elif sid in cache:
+            print(f"  {k} : dernière valeur connue utilisée")
             en_cache.append(k)
+        else:
+            raise RuntimeError(f"Aucune source pour {k}")
         out[k] = pd.Series({pd.Timestamp(a): b for a, b in cache[sid]}).sort_index()
     MACRO_CACHE.write_text(json.dumps(cache, separators=(",", ":")), "utf-8")
     return out, en_cache
@@ -241,6 +262,7 @@ def nouvelles_alertes(radar: dict, jours: int = 7) -> list[dict]:
 
 
 def main() -> None:
+    sys.stdout.reconfigure(line_buffering=True)
     offline = "--offline" in sys.argv
     fonds = json.loads((DATA / "fonds_suivis.json").read_text("utf-8"))
     regles = json.loads((DATA / "regles.json").read_text("utf-8"))
