@@ -1,0 +1,32 @@
+name: Radar NSI – scan mensuel des 835 fonds
+
+on:
+  schedule:
+    - cron: "40 4 1 * *"   # le 1er de chaque mois vers 6h40 (heure de Paris l'été)
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Scan de l'univers
+        run: python radar/scan.py
+      - name: Publication
+        run: |
+          git config user.name "Radar NSI"
+          git config user.email "radar-nsi@users.noreply.github.com"
+          git add web/scan.json data/yahoo_map.json
+          git diff --cached --quiet && echo "Aucun changement." && exit 0
+          git commit -m "Scan mensuel du $(date +%d/%m/%Y)"
+          git pull --rebase
+          git push
