@@ -144,7 +144,7 @@ const SLOTS={
   ps:{cat:"ps",fixed:"Produit structuré",fixedSub:"À sélectionner selon les conditions de marché au moment du versement",sri:3},
   em:{cat:"obl",fam:"Obligations émergentes",role:"Rendement obligataire"},
   abs:{cat:"obl",fam:"Gestion alternative",role:"Décorrélateur"},
-  immo:{cat:"immo",fam:"Immobilier non coté",role:"Revenus réguliers"},
+  immo:{cat:"immo",fam:"Immobilier non coté",role:"Revenus réguliers",force:{isin:"FR0014007X71",nom:"ESG Tendances Pierre P",sg:"Swiss Life AM",sri:3,devise:"EUR",note:null,perfLab:"3 ans",net5:5.6,p2025:5.62,pire:5.11,frais:3.2,why:"Choix NSI · société civile immobilière, historique de 3 ans (non classée)"}},
   mix:{cat:"div",fam:"Diversifiés flexibles",role:"Allocation flexible"},
   eu:{cat:"act",fam:"Actions Europe",role:"Cœur actions"},
   monde:{cat:"act",fam:"Actions internationales",role:"Diversification mondiale"},
@@ -205,7 +205,7 @@ function render(){
   let tot=0,s=0; const rows={};
   for(const [k,w] of Object.entries(alloc)){
     const sl=SLOTS[k]; let f=null;
-    if(sl.fam){const list=(TOP&&TOP.familles[sl.fam])||[]; f=list[0]||null;}
+    if(sl.force) f=sl.force; else if(sl.fam){const list=(TOP&&TOP.familles[sl.fam])||[]; f=list[0]||null;}
     const sri=sl.fixed?sl.sri:(f?f.sri:4); s+=w*sri; tot+=w;
     (rows[sl.cat]=rows[sl.cat]||[]).push({k,w,sl,f});
   }
@@ -218,11 +218,11 @@ function render(){
     for(const {k,w,sl,f} of list.sort((a,b)=>b.w-a.w)){
       if(sl.fixed||!f){ html+=`<div class="fund fixed"><div class="w">${w} %</div><div><div class="nm">${esc(sl.fixed||sl.fam)}</div><div class="meta">${esc(sl.fixedSub||"Aucun fonds classé dans cette famille")}</div></div><div></div></div>`; continue; }
       const id=k, op=st.open.has(id), stt=fundState(f.isin,sl.fam);
-      const alts=(TOP.familles[sl.fam]||[]).slice(1);
+      const alts=sl.force?(TOP.familles[sl.fam]||[]):(TOP.familles[sl.fam]||[]).slice(1);
       html+=`<div class="fund" tabindex="0" data-o="${id}" aria-expanded="${op}"><div class="w">${w} %</div>
-        <div style="min-width:0"><div class="nm">${esc(f.nom)}</div><div class="meta">${esc(sl.role)} · ${esc(sl.fam)} · n°1 sur ${f.n}${f.devise&&f.devise!=="EUR"?` · ${f.devise}`:""}</div></div>
-        <div class="right"><div class="note">${f.note}<small> / 100</small></div>${stt?chip(stt):""}</div>
-        <div class="figs"><span>5 ans <strong class="${cls(f.net5)}">${pct(f.net5)}</strong>/an</span><span>2025 <strong class="${cls(f.p2025)}">${pct(f.p2025)}</strong></span><span>Pire année <strong class="${cls(f.pire)}">${pct(f.pire)}</strong></span><span>Frais <strong>${fr(f.frais,2)} %</strong></span><span>SRI <strong>${f.sri}</strong></span></div>
+        <div style="min-width:0"><div class="nm">${esc(f.nom)}</div><div class="meta">${esc(sl.role)} · ${f.why?esc(f.why):`${esc(sl.fam)} · n°1 sur ${f.n}`}${f.devise&&f.devise!=="EUR"?` · ${f.devise}`:""}</div></div>
+        <div class="right"><div class="note">${f.note==null?"Choix NSI":`${f.note}<small> / 100</small>`}</div>${stt?chip(stt):""}</div>
+        <div class="figs"><span>${f.perfLab||"5 ans"} <strong class="${cls(f.net5)}">${pct(f.net5)}</strong>/an</span><span>2025 <strong class="${cls(f.p2025)}">${pct(f.p2025)}</strong></span><span>Pire année <strong class="${cls(f.pire)}">${pct(f.pire)}</strong></span><span>Frais <strong>${fr(f.frais,2)} %</strong></span><span>SRI <strong>${f.sri}</strong></span></div>
         ${op?`<div class="alts"><div><span>ISIN <span class="isin">${f.isin}</span> · ${esc(f.sg)}</span></div>${alts.map(a=>`<div><span><b>Alternative n°${a.rang}</b> : ${esc(a.nom)} (${esc(a.sg)})</span><span>note ${a.note} · 5 ans ${pct(a.net5)}/an · SRI ${a.sri} ${chip(fundState(a.isin,sl.fam)||"none")}</span></div>`).join("")}</div>`:""}
       </div>`;
     }
