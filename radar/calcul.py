@@ -67,13 +67,43 @@ def fetch_yahoo(symbol: str) -> pd.Series | None:
 
 
 def fetch_fred(series_id: str) -> pd.Series:
-    r = requests.get("https://fred.stlouisfed.org/graph/fredgraph.csv",
-                     params={"id": series_id, "cosd": "2017-01-01"}, headers=UA, timeout=30)
-    r.raise_for_status()
-    df = pd.read_csv(io.StringIO(r.text))
-    df.columns = ["date", "v"]
-    df = df[df.v.astype(str) != "."]
-    return pd.Series(df.v.astype(float).values, index=pd.to_datetime(df.date))
+    """Série FRED, avec 3 essais (le site répond parfois lentement aux serveurs de GitHub)."""
+    last = None
+    for essai in range(3):
+        try:
+            r = requests.get("https://fred.stlouisfed.org/graph/fredgraph.csv",
+                             params={"id": series_id, "cosd": "2017-01-01"}, headers=UA, timeout=(15, 120))
+            r.raise_for_status()
+            df = pd.read_csv(io.StringIO(r.text))
+            df.columns = ["date", "v"]
+            df = df[df.v.astype(str) != "."]
+            return pd.Series(df.v.astype(float).values, index=pd.to_datetime(df.date))
+        except Exception as e:  # noqa: BLE001
+            last = e
+            print(f"  FRED {series_id} essai {essai + 1}/3 : {e}")
+            time.sleep(10 * (essai + 1))
+    raise RuntimeError(f"FRED {series_id} injoignable : {last}")
+
+
+MACRO_CACHE = ROOT / "web" / "macro_cache.json"
+
+
+def fetch_macro() -> tuple[dict[str, pd.Series], list[str]]:
+    """Données de marché. Si FRED ne répond pas, reprend la dernière valeur connue (web/macro_cache.json)."""
+    cache = json.loads(MACRO_CACHE.read_text("utf-8")) if MACRO_CACHE.exists() else {}
+    out, en_cache = {}, []
+    for k, sid in FRED_IDS.items():
+        try:
+            s = fetch_fred(sid)
+            cache[sid] = [[d.strftime("%Y-%m-%d"), float(v)] for d, v in s.items()]
+        except Exception as e:  # noqa: BLE001
+            if sid not in cache:
+                raise
+            print(f"  {e} -> dernière valeur connue utilisée")
+            en_cache.append(k)
+        out[k] = pd.Series({pd.Timestamp(a): b for a, b in cache[sid]}).sort_index()
+    MACRO_CACHE.write_text(json.dumps(cache, separators=(",", ":")), "utf-8")
+    return out, en_cache
 
 
 # ----------------------------------------------------------------- calcul ---
@@ -216,6 +246,7 @@ def main() -> None:
     regles = json.loads((DATA / "regles.json").read_text("utf-8"))
     familles = json.loads((DATA / "familles.json").read_text("utf-8"))
 
+    en_cache = []
     if offline:
         cache = ROOT / "tests" / "cache"
         W = json.loads((cache / "weekly.json").read_text())
@@ -227,9 +258,12 @@ def main() -> None:
         for f in fonds:
             if f.get("symbole"):
                 prix[f["isin"]] = fetch_yahoo(f["symbole"]); time.sleep(0.4)
-        macro_raw = {k: fetch_fred(sid) for k, sid in FRED_IDS.items()}
+        macro_raw, en_cache = fetch_macro()
+        if en_cache:
+            print('Données de marché reprises du cache :', ', '.join(en_cache))
 
     radar = compute(fonds, regles, familles, prix, macro_raw)
+    radar["macro_en_cache"] = en_cache
     ok = sum(1 for f in radar["funds"] if f.get("spark"))
     print(f"Données au {radar['asof']} · {ok} fonds calculés · {len(radar['manquants'])} indisponibles")
 
