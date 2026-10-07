@@ -1,0 +1,258 @@
+{
+ "familles": {
+  "Monétaire": {
+   "top": [
+    "FR0010540385",
+    "FR0011630557",
+    "FR0010513523"
+   ],
+   "attente": null
+  },
+  "Obligations court terme & inflation": {
+   "top": [
+    "FR0010914358",
+    "LU1585265066",
+    "LU2182441571"
+   ],
+   "attente": null
+  },
+  "Obligations EUR & crédit": {
+   "top": [
+    "LU1608101579",
+    "FR0010752543",
+    "FR0011034818"
+   ],
+   "attente": null
+  },
+  "Obligations flexibles": {
+   "top": [
+    "FR0011147594",
+    "LU1164219682",
+    "FR0010707513"
+   ],
+   "attente": null
+  },
+  "Obligations haut rendement": {
+   "top": [
+    "LU1670722161",
+    "FR0010560037",
+    "FR0010460493"
+   ],
+   "attente": null
+  },
+  "Obligations émergentes": {
+   "top": [
+    "LU1623763221",
+    "LU1799936510",
+    "LU1165644672"
+   ],
+   "attente": null
+  },
+  "Obligations convertibles": {
+   "top": [
+    "FR0010191908",
+    "FR0011167410",
+    "LU0401809073"
+   ],
+   "attente": null
+  },
+  "Gestion alternative": {
+   "top": [
+    "IE00BLP5S460",
+    "LU1001747408",
+    "FR0010174144"
+   ],
+   "attente": {
+    "isin": "FR0010400762",
+    "n": 1,
+    "mois": "2026-10"
+   }
+  },
+  "Diversifiés prudents": {
+   "top": [
+    "LU0284394235",
+    "FR0011668730",
+    "LU1250158166"
+   ],
+   "attente": {
+    "isin": "FR0010177899",
+    "n": 1,
+    "mois": "2026-10"
+   }
+  },
+  "Diversifiés équilibrés": {
+   "top": [
+    "FR0007495049",
+    "FR0013183290",
+    "FR0011538818"
+   ],
+   "attente": null
+  },
+  "Diversifiés flexibles": {
+   "top": [
+    "FR0011153014",
+    "LU1100076550",
+    "FR0011261197"
+   ],
+   "attente": {
+    "isin": "FR0010147603",
+    "n": 1,
+    "mois": "2026-10"
+   }
+  },
+  "Diversifiés dynamiques": {
+   "top": [
+    "LU0068578508",
+    "FR0010097642",
+    "IE00BF2N0785"
+   ],
+   "attente": null
+  },
+  "Actions France": {
+   "top": [
+    "FR0010143545",
+    "LU0131510165",
+    "FR0010298596"
+   ],
+   "attente": null
+  },
+  "Actions zone euro": {
+   "top": [
+    "LU0165074666",
+    "FR0010632364",
+    "FR0000004970"
+   ],
+   "attente": {
+    "isin": "FR0010458745",
+    "n": 1,
+    "mois": "2026-10"
+   }
+  },
+  "Actions Europe": {
+   "top": [
+    "LU1670707527",
+    "LU0048588080",
+    "LU0072462186"
+   ],
+   "attente": {
+    "isin": "FR0010586024",
+    "n": 1,
+    "mois": "2026-10"
+   }
+  },
+  "Actions Europe petites & moyennes cap.": {
+   "top": [
+    "LU1366712435",
+    "FR0013333580",
+    "LU1120754533"
+   ],
+   "attente": null
+  },
+  "Actions internationales": {
+   "top": [
+    "LU1897556517",
+    "LU0211333025",
+    "FR0000438905"
+   ],
+   "attente": {
+    "isin": "LU1434527435",
+    "n": 1,
+    "mois": "2026-10"
+   }
+  },
+  "Actions US": {
+   "top": [
+    "FR0010501858",
+    "FR0000447807",
+    "FR0011212547"
+   ],
+   "attente": {
+    "isin": "FR0013342318",
+    "n": 1,
+    "mois": "2026-10"
+   }
+  },
+  "Actions Asie-Pacifique & Japon": {
+   "top": [
+    "LU1670618187",
+    "LU0054237671",
+    "LU0368678339"
+   ],
+   "attente": null
+  },
+  "Actions émergentes": {
+   "top": [
+    "FR0010241240",
+    "LU0164881194",
+    "LU0708055370"
+   ],
+   "attente": {
+    "isin": "FR0010380675",
+    "n": 1,
+    "mois": "2026-10"
+   }
+  },
+  "Autres actions sectorielles": {
+   "top": [
+    "LU1876459303",
+    "FR0011069137",
+    "LU0157182857"
+   ],
+   "attente": null
+  },
+  "Ressources & matières premières": {
+   "top": [
+    "FR0007001581",
+    "FR0010011171",
+    "FR0007390174"
+   ],
+   "attente": null
+  },
+  "Thématiques tech & santé": {
+   "top": [
+    "LU0099574567",
+    "LU0109394709",
+    "LU1244893696"
+   ],
+   "attente": null
+  },
+  "Thématiques environnement & infra.": {
+   "top": [
+    "LU2145461757",
+    "IE00BD4GTQ32",
+    "LU1951229035"
+   ],
+   "attente": null
+  },
+  "Immobilier coté": {
+   "top": [
+    "FR0011885797",
+    "FR0010541821",
+    "FR0013528478"
+   ],
+   "attente": {
+    "isin": "FR0011694256",
+    "n": 1,
+    "mois": "2026-10"
+   }
+  },
+  "Capital investissement": {
+   "top": [
+    "FR0013202108",
+    "FR0013301553",
+    "FR0013222353"
+   ],
+   "attente": null
+  },
+  "Immobilier non coté": {
+   "top": [
+    "FR0013526100",
+    "QS0002017190",
+    "QS0002004602"
+   ],
+   "attente": null
+  }
+ },
+ "journal": [],
+ "dernier_scan": "2026-10"
+}
