@@ -1,10 +1,9 @@
 """Scan mensuel de tout l'univers Swiss Life.
 
 Chaque mois : cours hebdomadaires des fonds sur 3 ans (Yahoo Finance), note glissante
-par famille avec les mêmes critères que le classement annuel, puis repérage :
-- des challengers : fonds hors top 3 dont la note glissante dépasse nettement celle du top 3 ;
-- des décrochages : fonds du top 3 tombés loin dans le classement glissant.
-Le top 3 officiel ne change pas : c'est une alerte pour le comité.
+par famille avec les mêmes critères que le classement annuel.
+Le classement combine la note 5 ans (60 %) et la note 3 ans glissants (40 %).
+Le top 3 évolue automatiquement, avec des garde-fous (voir classer()).
 
 Usage :
     python radar/scan.py             # scan complet (GitHub Actions, une fois par mois)
@@ -26,7 +25,9 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 UA = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36"}
 POIDS = {"perf36": 0.35, "regul": 0.25, "mdd": 0.15, "frais": 0.15, "perf12": 0.10}
-MARGE = 15         # points de note glissante d'avance exigés pour un challenger
+POIDS_5ANS = 0.6   # note du classement = 60 % note 5 ans + 40 % note 3 ans glissants
+ECART = 5          # points d'avance exigés sur le plus faible du top 3
+NB_MOIS = 2        # nombre de scans mensuels consécutifs avant l'entrée dans le top 3
 NOUVEL_ESSAI = 90  # jours avant de rechercher à nouveau un fonds introuvable
 
 
@@ -114,31 +115,79 @@ def noter(univers: list[dict], prix: dict[str, pd.Series]) -> dict:
     return res
 
 
-def alertes(familles: dict) -> tuple[list, list]:
-    chall, decr = [], []
-    for fam, lst in familles.items():
-        top = [f for f in lst if f["rang_annuel"] and f["rang_annuel"] <= 3]
-        if not top:
+def demi(x: float) -> int:
+    return int(np.floor(x + 0.5))
+
+
+def classer(univers: list[dict], roll: dict, perfs: dict, etat: dict, mois: str) -> tuple[dict, list, list]:
+    """Note du classement = 60 % note 5 ans (annuelle) + 40 % note 3 ans glissants (scan).
+    Le top 3 évolue avec hystérésis : un fonds entre s'il dépasse le plus faible du top 3
+    d'au moins ECART points, NB_MOIS scans mensuels de suite ; un changement par famille et par mois."""
+    n3 = {f["isin"]: f["note"] for lst in roll.values() for f in lst}
+    fams: dict[str, list] = {}
+    for f in univers:
+        if f.get("note_annuelle") is None or not f.get("famille") or f["isin"] not in perfs:
             continue
-        seuil = min(f["note"] for f in top)
-        for f in lst:
-            hors_top = not f["rang_annuel"] or f["rang_annuel"] > 3
-            if hors_top and f["rang"] <= 2 and f["note"] >= seuil + MARGE:
-                chall.append(dict(f, famille=fam, ecart=f["note"] - seuil,
-                                  devance=min(top, key=lambda x: x["note"])["nom"]))
-                break  # un seul challenger par famille : le mieux classé
-        if len(lst) >= 6:
-            for f in top:
-                if f["rang"] > len(lst) / 2:
-                    decr.append(dict(f, famille=fam))
-    chall.sort(key=lambda x: -x["ecart"])
-    return chall, decr
+        net5, p25, pire, n5 = perfs[f["isin"]]
+        r3 = n3.get(f["isin"])
+        note = demi(POIDS_5ANS * n5 + (1 - POIDS_5ANS) * r3) if r3 is not None else demi(n5)
+        fams.setdefault(f["famille"], []).append(dict(isin=f["isin"], nom=f["nom"], sg=f.get("sg"), sri=f.get("sri"), devise=f.get("devise"),
+                                                      frais=f.get("frais"), net5=net5, p2025=p25, pire=pire, note=note, n5=demi(n5), n3=r3,
+                                                      rang_annuel=f.get("rang_annuel")))
+    journal, en_lice = [], []
+    E = etat.setdefault("familles", {})
+    for fam, lst in fams.items():
+        lst.sort(key=lambda x: (-x["note"], -x["n5"]))
+        by = {x["isin"]: x for x in lst}
+        e = E.setdefault(fam, {"top": [x["isin"] for x in sorted(lst, key=lambda x: x["rang_annuel"] or 99)[:3]], "attente": None})
+        e["top"] = [i for i in e["top"] if i in by]
+        for x in lst:                                   # famille qui a perdu un fonds : on complète
+            if len(e["top"]) >= 3:
+                break
+            if x["isin"] not in e["top"]:
+                e["top"].append(x["isin"])
+        top = [by[i] for i in e["top"]]
+        if top and len(lst) > len(top):
+            faible = min(top, key=lambda x: (x["note"], x["n5"]))
+            # seul un fonds dont la dynamique 3 ans est mesurée peut entrer dans le top 3
+            cand = next((x for x in lst if x["isin"] not in e["top"] and x["n3"] is not None), None)
+            if cand and cand["note"] >= faible["note"] + ECART:
+                a = e.get("attente") or {}
+                if a.get("isin") == cand["isin"]:
+                    n = a["n"] if a.get("mois") == mois else a["n"] + 1 if a.get("mois") == mois_prec(mois) else 1
+                else:
+                    n = 1
+                e["attente"] = {"isin": cand["isin"], "n": n, "mois": mois}
+                if n >= NB_MOIS:
+                    e["top"][e["top"].index(faible["isin"])] = cand["isin"]
+                    e["attente"] = None
+                    journal.append(dict(date=dt.date.today().isoformat(), famille=fam, entre=cand["nom"], entre_isin=cand["isin"], note_entre=cand["note"],
+                                        sort=faible["nom"], sort_isin=faible["isin"], note_sort=faible["note"]))
+                else:
+                    en_lice.append(dict(famille=fam, nom=cand["nom"], isin=cand["isin"], note=cand["note"], n5=cand["n5"], n3=cand["n3"],
+                                        devance=faible["nom"], note_devance=faible["note"], mois=n, sur=NB_MOIS))
+            else:
+                e["attente"] = None
+        tops = set(e["top"])
+        ordre = sorted([x for x in lst if x["isin"] in tops], key=lambda x: (-x["note"], -x["n5"])) + [x for x in lst if x["isin"] not in tops]
+        for k, x in enumerate(ordre, 1):
+            x["rang"], x["n"], x["top"] = k, len(lst), x["isin"] in tops
+        fams[fam] = ordre
+    etat["journal"] = (journal + etat.get("journal", []))[:60]
+    etat["dernier_scan"] = mois
+    return fams, journal, en_lice
+
+
+def mois_prec(m: str) -> str:
+    y, mo = map(int, m.split("-"))
+    return f"{y - 1}-12" if mo == 1 else f"{y}-{mo - 1:02d}"
 
 
 def main() -> None:
     sys.stdout.reconfigure(line_buffering=True)
     offline = "--offline" in sys.argv
     univers = json.loads((DATA / "univers.json").read_text("utf-8"))
+    carte: dict = {}
     if offline:
         W = json.loads((ROOT / "tests" / "cache" / "weekly.json").read_text())
         prix = {i: pd.Series(v, pd.date_range(s, periods=len(v), freq="7D"), dtype=float).ffill() for i, (s, v) in W.items()}
@@ -163,15 +212,49 @@ def main() -> None:
                 print(f"  {k}/{len(univers)} fonds traités, {couverts} avec cotations")
         carte_path.write_text(json.dumps(carte, ensure_ascii=False, indent=0), "utf-8")
 
-    familles = noter(univers, prix)
-    chall, decr = alertes(familles)
-    notes = sum(len(v) for v in familles.values())
-    out = dict(date=dt.date.today().isoformat(), total=len(univers), couverts=couverts, notes=notes,
-               marge=MARGE, challengers=chall, decrochages=decr,
-               familles={k: v[:10] for k, v in familles.items()})
-    dest = ROOT / ("tests/scan_offline.json" if offline else "web/scan.json")
-    dest.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), "utf-8")
-    print(f"Scan : {couverts}/{len(univers)} fonds cotés, {notes} notés, {len(chall)} challengers, {len(decr)} décrochages -> {dest.name}")
+    roll = noter(univers, prix)
+    perfs = json.loads((DATA / "perfs.json").read_text("utf-8"))
+    etat_path = ROOT / ("tests/top3_etat_offline.json" if offline else "data/top3_etat.json")
+    etat = json.loads(etat_path.read_text("utf-8")) if etat_path.exists() else {}
+    mois = dt.date.today().strftime("%Y-%m")
+    fams, journal, en_lice = classer(univers, roll, perfs, etat, mois)
+    notes = sum(len(v) for v in roll.values())
+    today = dt.date.today().isoformat()
+    sortie = ROOT / ("tests" if offline else "web")
+    classement = dict(date=today, poids_5ans=POIDS_5ANS, ecart=ECART, nb_mois=NB_MOIS, familles=fams,
+                      journal=etat["journal"], en_lice=en_lice)
+    (sortie / ("classement_offline.json" if offline else "classement.json")).write_text(
+        json.dumps(classement, ensure_ascii=False, separators=(",", ":")), "utf-8")
+    top3 = dict(source=f"Classement NSI du {today} (60 % note 5 ans, 40 % note 3 ans glissants)",
+                familles={fam: [dict(isin=x["isin"], nom=x["nom"], sg=x["sg"], sri=x["sri"], devise=x["devise"], rang=x["rang"], note=x["note"],
+                                     n=x["n"], net5=x["net5"], p2025=x["p2025"], pire=x["pire"], frais=x["frais"]) for x in lst if x["top"]]
+                          for fam, lst in fams.items()})
+    (sortie / ("top3_offline.json" if offline else "top3.json")).write_text(json.dumps(top3, ensure_ascii=False, indent=1), "utf-8")
+    scan = dict(date=today, total=len(univers), couverts=couverts, notes=notes, changements=journal, en_lice=en_lice)
+    (sortie / ("scan_offline.json" if offline else "scan.json")).write_text(json.dumps(scan, ensure_ascii=False, separators=(",", ":")), "utf-8")
+    etat_path.write_text(json.dumps(etat, ensure_ascii=False, indent=1), "utf-8")
+    if not offline:
+        maj_suivis(fams, carte)
+    print(f"Scan : {couverts}/{len(univers)} fonds cotés, {notes} notés sur 3 ans, {len(journal)} changement(s) du top 3, {len(en_lice)} fonds en lice")
+
+
+def maj_suivis(fams: dict, carte: dict) -> None:
+    """Le radar du lundi suit le top 3 à jour."""
+    path = DATA / "fonds_suivis.json"
+    ancien = {f["isin"]: f for f in json.loads(path.read_text("utf-8"))}
+    neuf = []
+    for fam, lst in fams.items():
+        for x in lst:
+            if not x["top"]:
+                continue
+            f = ancien.get(x["isin"]) or dict(isin=x["isin"], nom=x["nom"], famille=fam, symbole=(carte.get(x["isin"]) or {}).get("s"),
+                                               correspondance="exacte", societe=x["sg"], sri=x["sri"])
+            f.update(rang=float(x["rang"]), note=x["note"])
+            neuf.append(f)
+    # familles absentes du classement (aucun fonds éligible) : on garde le suivi existant
+    vues = set(fams)
+    neuf += [f for f in ancien.values() if f["famille"] not in vues]
+    path.write_text(json.dumps(neuf, ensure_ascii=False, indent=1), "utf-8")
 
 
 if __name__ == "__main__":
