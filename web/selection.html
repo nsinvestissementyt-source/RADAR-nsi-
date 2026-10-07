@@ -178,7 +178,6 @@ input[type=search]{width:min(270px,100%)}
 <div class="bar"><div class="wrap">
   <input type="search" id="q" placeholder="Rechercher un fonds : nom, société ou ISIN" aria-label="Rechercher un fonds">
   <div class="chips" id="classes" role="group" aria-label="Classe d'actifs"></div>
-  <button class="chip ep-toggle" id="ep" aria-pressed="false" title="Afficher seulement les familles où un fonds est à un bon moment pour investir">Bon moment</button>
   <span class="spacer"></span>
   <label class="ctl" for="sri">Risque max
     <select id="sri"><option value="7">Tous</option><option value="2">SRI 2</option><option value="3">SRI 3</option><option value="4">SRI 4</option><option value="5">SRI 5</option><option value="6">SRI 6</option></select>
@@ -375,13 +374,11 @@ document.addEventListener("click",e=>{
 });
 document.addEventListener("keydown",e=>{const r=e.target.closest&&e.target.closest("[data-det]");if(r&&(e.key==="Enter"||e.key===" ")){e.preventDefault();r.click()}});
 $("#sri").onchange=e=>{st.sri=+e.target.value;render()};
-$("#ep").onclick=()=>{st.ep=!st.ep;$("#ep").setAttribute("aria-pressed",st.ep);render()};
 $("#q").oninput=e=>{st.q=e.target.value;render()};
 render();
 Promise.all([fetch("classement.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null),
              fetch("entrees.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null)])
- .then(([C,E])=>{ if(C){CLS=C;appliquerClassement(C);} ENT=E; render();
-   if(E){const n=Object.values(E.fonds).filter(v=>!v.p&&(v.e==="zone"||v.e==="renfort")).length; $("#ep").textContent=`Bon moment (${n})`;} });
+ .then(([C,E])=>{ if(C){CLS=C;appliquerClassement(C);} ENT=E; render(); });
 </script>
 <script>
 fetch("scan.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(S=>{

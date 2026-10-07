@@ -168,7 +168,6 @@ footer .wrap.foot1{display:flex;gap:12px 20px;align-items:center;justify-content
       <div class="panel" style="display:grid;gap:12px">
         <div id="donut"></div>
         <p class="pname" id="pname"></p>
-        <p class="target" id="ptarget"></p>
         <p class="pdesc" id="pdesc"></p>
         <div class="gauge"><div class="lab"><span>Risque du portefeuille</span><b id="sriv"></b></div><div class="tr"><i id="srid"></i></div><div class="lab"><span>1 · prudent</span><span>7 · offensif</span></div></div>
       </div>
@@ -310,7 +309,7 @@ function render(){
   document.querySelectorAll("[data-p]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.p===st.p));
   $("#m-capital").setAttribute("aria-pressed",st.mode==="capital"); $("#m-dca").setAttribute("aria-pressed",st.mode==="dca");
   const d=donut(alloc); $("#donut").innerHTML=d.svg;
-  $("#pname").textContent=P.label; $("#ptarget").textContent=P.target; $("#pdesc").textContent=P.desc;
+  $("#pname").textContent=P.label; $("#pdesc").textContent=P.desc;
   $("#legend").innerHTML=Object.entries(d.by).map(([c,w])=>`<div><i style="background:${CAT_HEX[c]}"></i><span>${CAT[c][0]}</span><b>${w} %</b></div>`).join("");
   // risk
   let tot=0,s=0; const rows={}, pris=new Set(), CH={};
