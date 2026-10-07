@@ -150,6 +150,18 @@ header.top img{width:36px;height:auto}
 .scan .sbody .lead{margin-top:10px}
 input[type=search]{width:min(360px,100%)}
 @media (max-width:600px){.scan .hint{margin-left:0}}
+.ep{display:inline-block;white-space:nowrap;margin-top:4px;font-size:11.5px;font-weight:700;padding:1px 8px;border-radius:999px}
+.ep-zone{background:var(--good-bg);color:var(--good)}
+.ep-renfort{background:var(--good);color:var(--surface)}
+.ep-approche{background:var(--warn-bg);color:var(--warn)}
+.ep-propre{background:var(--soft);color:var(--muted);font-weight:600}
+.ep-count{font-size:11px;font-weight:700;padding:1px 8px;border-radius:999px;background:var(--good-bg);color:var(--good)}
+.ep-autres{font-size:12px;margin-top:8px;padding:8px 10px;border-radius:8px;background:var(--good-bg);color:var(--ink)}
+.ep-autres b{color:var(--good)}
+.full td.ep-t-zone,.full td.ep-t-renfort{color:var(--good);font-weight:700}.full td.ep-t-approche{color:var(--warn);font-weight:600}.full td.ep-t-propre{color:var(--muted)}
+.chip.ep-toggle[aria-pressed="true"]{border-color:var(--good);background:var(--good-bg);color:var(--good);font-weight:700}
+input[type=search]{width:min(270px,100%)}
+.scan .badge.wait{background:var(--warn-bg);color:var(--warn)}
 </style>
 </head><body>
 
@@ -161,6 +173,7 @@ input[type=search]{width:min(360px,100%)}
 <div class="bar"><div class="wrap">
   <input type="search" id="q" placeholder="Rechercher un fonds : nom, société ou ISIN" aria-label="Rechercher un fonds">
   <div class="chips" id="classes" role="group" aria-label="Classe d'actifs"></div>
+  <button class="chip ep-toggle" id="ep" aria-pressed="false" title="Afficher seulement les familles où un fonds bien noté est en point d'entrée">Points d'entrée</button>
   <span class="spacer"></span>
   <label class="ctl" for="sri">Risque max
     <select id="sri"><option value="7">Tous</option><option value="2">SRI 2</option><option value="3">SRI 3</option><option value="4">SRI 4</option><option value="5">SRI 5</option><option value="6">SRI 6</option></select>
@@ -173,7 +186,7 @@ input[type=search]{width:min(360px,100%)}
 <footer><div class="wrap">
   <div>
     <h4>Méthode de notation</h4>
-    <p style="margin:0 0 8px">Chaque critère est un rang centile au sein du groupe (0 = dernier, 100 = premier), puis pondéré.</p>
+    <p style="margin:0 0 8px">La note du classement combine la note 5 ans (60 %) et la note 3 ans glissants mise à jour chaque mois (40 %). La note 5 ans repose sur les critères ci-dessous, chacun en rang centile au sein de la famille (0 = dernier, 100 = premier).</p>
     <table>
       <tr><td>Performance nette annualisée 5 ans</td><td>35 %</td></tr>
       <tr><td>Régularité (rang moyen sur 2021–2025)</td><td>25 %</td></tr>
@@ -206,7 +219,20 @@ const CLASSES=[
  ["Thématiques",f=>/^(Thématiques|Ressources|Autres actions)/.test(f)],
  ["Immobilier",f=>/^(Immobilier|Capital)/.test(f)]
 ];
-const st={view:"fam",cls:0,sri:7,q:"",open:new Set(),det:new Set()};
+const st={view:"fam",cls:0,sri:7,q:"",ep:false,open:new Set(),det:new Set()};
+let ENT=null, CLS=null;
+const EPL={renfort:"Renforcement",zone:"Point d'entrée",approche:"En approche"};
+const ep=f=>{const e=ENT&&ENT.fonds[f.isin]; return e&&e.e?e:null};
+const bon=f=>{const e=ep(f); return e&&!e.p&&(e.e==="zone"||e.e==="renfort")};
+const ddtxt=v=>(v>0?"+":"")+v.toFixed(1).replace(".",",")+" %";
+function epHTML(f){const e=ep(f); if(!e) return "";
+  return e.p?`<div class="ep ep-propre" title="Baisse depuis son plus haut nettement supérieure à celle de sa famille : elle vient du fonds, pas du marché">Baisse propre au fonds · ${ddtxt(e.dd)}</div>`
+            :`<div class="ep ep-${e.e}" title="Baisse depuis son plus haut des 12 derniers mois">${EPL[e.e]} · ${ddtxt(e.dd)}</div>`}
+function appliquerClassement(C){
+  const by=new Map(D.map(f=>[f.isin,f]));
+  for(const [fam,lst] of Object.entries(C.familles)) for(const x of lst){const f=by.get(x.isin); if(!f) continue;
+    f.f_score=x.note; f.f_rang=x.rang; f.f_n=x.n; f.n5=x.n5; f.n3=x.n3; f.top=x.top;}
+}
 const $=s=>document.querySelector(s);
 const pct=v=>v==null?"–":(v>0?"+":"")+v.toFixed(2).replace(".",",")+" %";
 const num=v=>v==null?"–":v.toFixed(2).replace(".",",")+" %";
@@ -246,7 +272,7 @@ function rowHTML(f,P,i){
   const crit=[["Perf. 5 ans annualisée","s_perf5"],["Régularité 2021–2025","s_regul"],["Pire année 2021–2025","s_res22"],["Frais","s_frais"],["Perf. 2025","s_perf1"]];
   return `<div class="row" tabindex="0" data-det="${id}" aria-expanded="${open}">
     <div class="rk">${f[P+"rang"]}</div>
-    <div style="min-width:0"><div class="nm">${esc(f.nom)}</div><div class="sg">${esc(f.sg)}${f.devise!=="EUR"?` · <b>${f.devise}</b>`:""}${f.label?` · ${esc(f.label.trim())}`:""}</div></div>
+    <div style="min-width:0"><div class="nm">${esc(f.nom)}</div><div class="sg">${esc(f.sg)}${f.devise!=="EUR"?` · <b>${f.devise}</b>`:""}${f.label?` · ${esc(f.label.trim())}`:""}</div>${epHTML(f)}</div>
     <div class="sc"><b>${Math.round(f[P+"score"])}</b><i>/ 100</i></div>
     <div class="figs">
       <span>5 ans <strong class="${cls(f.net5)}">${pct(f.net5)}</strong>/an</span>
@@ -255,6 +281,7 @@ function rowHTML(f,P,i){
       ${sriBar(f.sri)} ${spark(f)}
     </div>
     ${open?`<div class="detail">
+      ${f.n5!=null?`<div>Note du classement <b>${Math.round(f.f_score)}</b> = 60 % note 5 ans (<b>${f.n5}</b>) + 40 % note 3 ans glissants (<b>${f.n3??"non mesurée"}</b>)${f.n3==null?" : note 5 ans seule":""}. Détail de la note 5 ans :</div>`:""}
       ${crit.map(([l,k])=>`<div class="crit"><span>${l}</span><span class="tr"><i style="width:${f[P+k]}%"></i></span><em>${Math.round(f[P+k])}</em></div>`).join("")}
       <div class="yrs">${[2021,2022,2023,2024,2025].map(y=>`<span>${y} <b class="${cls(f["p"+y])}">${pct(f["p"+y])}</b></span>`).join("")}</div>
       <div>ISIN <span class="isin">${f.isin}</span> · ${esc(f.cat)} · ${esc(f.sfdr||"")} · ${esc(f.forme||"")}</div>
@@ -262,9 +289,9 @@ function rowHTML(f,P,i){
   </div>`;
 }
 function fullTable(o,P){
-  return `<div class="full"><table><thead><tr><th>#</th><th>Fonds</th><th>Note</th><th>5 ans/an</th><th>2025</th><th>2024</th><th>2023</th><th>2022</th><th>2021</th><th>Frais</th><th>SRI</th></tr></thead><tbody>
+  return `<div class="full"><table><thead><tr><th>#</th><th>Fonds</th><th>Note</th><th>5 ans/an</th><th>2025</th><th>2024</th><th>2023</th><th>2022</th><th>2021</th><th>Frais</th><th>SRI</th><th>Plus haut</th></tr></thead><tbody>
   ${o.shown.map(f=>`<tr class="${f[P+"rang"]<=3?"top":""}"><td>${f[P+"rang"]}</td><td>${esc(f.nom)}<br><span class="sg">${esc(f.sg)} · <span class="isin">${f.isin}</span></span></td><td><b>${Math.round(f[P+"score"])}</b></td>
-  <td class="${cls(f.net5)}">${pct(f.net5)}</td>${[2025,2024,2023,2022,2021].map(y=>`<td class="${cls(f["p"+y])}">${pct(f["p"+y])}</td>`).join("")}<td>${num(f.frais_gestion)}</td><td>${f.sri??"–"}</td></tr>`).join("")}
+  <td class="${cls(f.net5)}">${pct(f.net5)}</td>${[2025,2024,2023,2022,2021].map(y=>`<td class="${cls(f["p"+y])}">${pct(f["p"+y])}</td>`).join("")}<td>${num(f.frais_gestion)}</td><td>${f.sri??"–"}</td><td class="${ep(f)?(ep(f).p?"ep-t-propre":"ep-t-"+ep(f).e):""}">${ENT&&ENT.fonds[f.isin]?ddtxt(ENT.fonds[f.isin].dd):"–"}</td></tr>`).join("")}
   </tbody></table></div>`;
 }
 const norm=s=>String(s??"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
@@ -317,10 +344,13 @@ function render(){
     for(const o of list){
       const open=st.open.has(o.name), top=o.shown.slice(0,3);
       const n=o.ranked.length;
+      const nEp=top.filter(bon).length, autres=o.shown.slice(3).filter(f=>bon(f)&&f.f_score>=80).slice(0,2);
+      if(st.ep&&!nEp&&!autres.length) continue;
       html+=`<article class="card"><h3>${esc(o.name)}</h3>
-        <div class="meta"><span>${n} classé${n>1?"s":""} sur ${o.all.length}</span>${n>0&&n<4?`<span class="flag">Groupe réduit</span>`:""}${st.sri<7?`<span>SRI ≤ ${st.sri}</span>`:""}</div>
+        <div class="meta"><span>${n} classé${n>1?"s":""} sur ${o.all.length}</span>${nEp?`<span class="ep-count">${nEp} en point d'entrée</span>`:""}${n>0&&n<4?`<span class="flag">Groupe réduit</span>`:""}${st.sri<7?`<span>SRI ≤ ${st.sri}</span>`:""}</div>
         ${n===0?`<div class="excl">Aucun fonds avec 5 ans d'historique dans ce groupe.</div>`:
           top.length?top.map((f,i)=>rowHTML(f,P,i)).join(""):`<div class="excl">Aucun fonds classé ne respecte ce niveau de risque.</div>`}
+        ${autres.length?`<div class="ep-autres"><b>Aussi en point d'entrée</b> (notés 80+) : ${autres.map(f=>`${esc(f.nom)} <span class="sg">n°${f.f_rang} · note ${Math.round(f.f_score)} · ${ddtxt(ENT.fonds[f.isin].dd)}</span>`).join(" ; ")}</div>`:""}
         ${open?fullTable(o,P):""}
         ${o.young.length?`<div class="excl">Non classés (historique &lt; 5 ans) : ${o.young.slice(0,4).map(f=>esc(f.nom)).join(", ")}${o.young.length>4?` et ${o.young.length-4} autres`:""}.</div>`:""}
         ${o.shown.length>3?`<button class="more" data-open="${esc(o.name)}">${open?"Masquer le classement complet":`Voir le classement complet (${o.shown.length})`}</button>`:""}
@@ -328,7 +358,7 @@ function render(){
     }
     html+=`</div></section>`;
   }
-  $("#main").innerHTML=html;
+  $("#main").innerHTML=html||`<div class="empty">Aucune famille n'a de fonds bien noté en point d'entrée cette semaine.</div>`;
 }
 $("#classes").innerHTML=CLASSES.map((c,i)=>`<button class="chip" data-cls="${i}" aria-pressed="${i===0}">${c[0]}</button>`).join("");
 document.addEventListener("click",e=>{
@@ -339,19 +369,25 @@ document.addEventListener("click",e=>{
 });
 document.addEventListener("keydown",e=>{const r=e.target.closest&&e.target.closest("[data-det]");if(r&&(e.key==="Enter"||e.key===" ")){e.preventDefault();r.click()}});
 $("#sri").onchange=e=>{st.sri=+e.target.value;render()};
+$("#ep").onclick=()=>{st.ep=!st.ep;$("#ep").setAttribute("aria-pressed",st.ep);render()};
 $("#q").oninput=e=>{st.q=e.target.value;render()};
 render();
+Promise.all([fetch("classement.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null),
+             fetch("entrees.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null)])
+ .then(([C,E])=>{ if(C){CLS=C;appliquerClassement(C);} ENT=E; render();
+   if(E){const n=Object.values(E.fonds).filter(v=>!v.p&&(v.e==="zone"||v.e==="renfort")).length; $("#ep").textContent=`Points d'entrée (${n})`;} });
 </script>
 <script>
 fetch("scan.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(S=>{
   if(!S) return;
   const el=document.getElementById("scan"), e=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-  const p=v=>v==null?"–":(v>0?"+":"")+v.toFixed(1).replace(".",",")+" %"; const d=s=>s.split("-").reverse().join("/");
-  const ch=S.challengers.map(f=>`<div class="it"><b>${e(f.nom)}</b><span class="up">+${f.ecart} pts</span><small>${e(f.famille)} · n°${f.rang} glissant (note ${f.note}) devant ${e(f.devance)} · 12 mois ${p(f.perf12)} · 3 ans ${p(f.perf36)}/an</small></div>`).join("")||'<div class="none">Aucun fonds hors top 3 ne se détache nettement ce mois-ci.</div>';
-  const dc=S.decrochages.map(f=>`<div class="it"><b>${e(f.nom)}</b><span class="down">${f.rang}e / ${f.n}</span><small>${e(f.famille)} · n°${f.rang_annuel} du classement annuel · 12 mois ${p(f.perf12)} · baisse max 3 ans ${p(f.mdd)}</small></div>`).join("")||'<div class="none">Aucun fonds du top 3 en net recul.</div>';
-  el.innerHTML=`<details><summary><b>Scan mensuel</b><span class="sdate">${d(S.date)}</span><span class="badge up">${S.challengers.length} en forte dynamique</span><span class="badge down">${S.decrochages.length} top 3 en perte de vitesse</span><span class="hint">Détails</span></summary>
-  <div class="sbody"><p class="lead">${S.notes} fonds notés sur 3 ans glissants (${S.couverts} cotés sur ${S.total}). Le top 3 officiel ne change pas automatiquement : ces signaux sont à valider en comité.</p>
-  <div class="cols"><div><h3>Fonds en forte dynamique</h3>${ch}</div><div><h3>Top 3 en perte de vitesse</h3>${dc}</div></div></div></details>`;
+  const d=s=>s.split("-").reverse().join("/");
+  const CH=S.changements||[], EL=S.en_lice||[];
+  const ch=CH.map(j=>`<div class="it"><b>${e(j.entre)}</b><span class="up">entre · ${j.note_entre}</span><small>${e(j.famille)} · remplace ${e(j.sort)} (${j.note_sort})</small></div>`).join("")||'<div class="none">Aucun changement du top 3 ce mois-ci.</div>';
+  const li=EL.map(f=>`<div class="it"><b>${e(f.nom)}</b><span class="up">${f.note} vs ${f.note_devance}</span><small>${e(f.famille)} · mois ${f.mois} sur ${f.sur} · note 5 ans ${f.n5}, 3 ans glissants ${f.n3} · pourrait remplacer ${e(f.devance)}</small></div>`).join("")||'<div class="none">Aucun fonds ne menace le top 3 actuellement.</div>';
+  el.innerHTML=`<details><summary><b>Scan mensuel</b><span class="sdate">${d(S.date)}</span><span class="badge up">${CH.length} changement${CH.length>1?"s":""} du top 3</span><span class="badge wait">${EL.length} fonds en lice</span><span class="hint">Détails</span></summary>
+  <div class="sbody"><p class="lead">Note du classement = 60 % note 5 ans + 40 % note 3 ans glissants (${S.couverts} fonds cotés sur ${S.total}). Un fonds entre dans le top 3 s'il dépasse le moins bien noté du top 3 d'au moins 5 points, deux mois de suite. Les portefeuilles et le radar suivent automatiquement.</p>
+  <div class="cols"><div><h3>Changements du top 3 ce mois-ci</h3>${ch}</div><div><h3>En lice pour le top 3</h3>${li}</div></div></div></details>`;
   el.hidden=false;
 }).catch(()=>{});
 </script>
