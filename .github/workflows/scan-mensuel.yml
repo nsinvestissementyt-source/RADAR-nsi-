@@ -25,7 +25,7 @@ jobs:
         run: |
           git config user.name "Radar NSI"
           git config user.email "radar-nsi@users.noreply.github.com"
-          git add web/scan.json data/yahoo_map.json
+          git add web/scan.json web/classement.json web/top3.json data/yahoo_map.json data/top3_etat.json data/fonds_suivis.json
           git diff --cached --quiet && echo "Aucun changement." && exit 0
           git commit -m "Scan mensuel du $(date +%d/%m/%Y)"
           git pull --rebase

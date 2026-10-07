@@ -11,7 +11,7 @@ permissions:
 jobs:
   calcul:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -21,11 +21,16 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Calcul du radar
         run: python radar/calcul.py
+      - name: Points d'entrée de tous les fonds classés
+        run: python radar/entrees.py
+        continue-on-error: true
       - name: Publication
         run: |
           git config user.name "Radar NSI"
           git config user.email "radar-nsi@users.noreply.github.com"
           git add web/radar.json web/macro_cache.json
+          if [ -f web/entrees.json ]; then git add web/entrees.json; fi
           git diff --cached --quiet && echo "Aucun changement." && exit 0
           git commit -m "Radar du $(date +%d/%m/%Y)"
+          git pull --rebase
           git push
