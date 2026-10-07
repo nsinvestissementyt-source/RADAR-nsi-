@@ -162,6 +162,11 @@ input[type=search]{width:min(360px,100%)}
 .chip.ep-toggle[aria-pressed="true"]{border-color:var(--good);background:var(--good-bg);color:var(--good);font-weight:700}
 input[type=search]{width:min(270px,100%)}
 .scan .badge.wait{background:var(--warn-bg);color:var(--warn)}
+.ep-renfort{background:var(--good-bg);color:var(--good)}
+.ep-propre{background:var(--bad-bg);color:var(--bad);font-weight:700}
+.full td.ep-t-propre{color:var(--bad)}
+.leg3{display:flex;gap:6px 14px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--muted);padding-top:10px}
+.leg3 .ep{margin:0}
 </style>
 </head><body>
 
@@ -173,7 +178,7 @@ input[type=search]{width:min(270px,100%)}
 <div class="bar"><div class="wrap">
   <input type="search" id="q" placeholder="Rechercher un fonds : nom, société ou ISIN" aria-label="Rechercher un fonds">
   <div class="chips" id="classes" role="group" aria-label="Classe d'actifs"></div>
-  <button class="chip ep-toggle" id="ep" aria-pressed="false" title="Afficher seulement les familles où un fonds bien noté est en point d'entrée">Points d'entrée</button>
+  <button class="chip ep-toggle" id="ep" aria-pressed="false" title="Afficher seulement les familles où un fonds est à un bon moment pour investir">Bon moment</button>
   <span class="spacer"></span>
   <label class="ctl" for="sri">Risque max
     <select id="sri"><option value="7">Tous</option><option value="2">SRI 2</option><option value="3">SRI 3</option><option value="4">SRI 4</option><option value="5">SRI 5</option><option value="6">SRI 6</option></select>
@@ -181,6 +186,7 @@ input[type=search]{width:min(270px,100%)}
 </div></div>
 
 <section class="wrap scan" id="scan" hidden></section>
+<div class="wrap leg3"><span class="ep ep-zone">Bon moment</span> baisse marquée depuis son plus haut <span class="ep ep-approche">À suivre</span> baisse proche du seuil <span class="ep ep-propre">Attendre</span> baisse propre au fonds, pas au marché</div>
 <main class="wrap" id="main"></main>
 
 <footer><div class="wrap">
@@ -221,12 +227,12 @@ const CLASSES=[
 ];
 const st={view:"fam",cls:0,sri:7,q:"",ep:false,open:new Set(),det:new Set()};
 let ENT=null, CLS=null;
-const EPL={renfort:"Renforcement",zone:"Point d'entrée",approche:"En approche"};
+const EPL={renfort:"Bon moment",zone:"Bon moment",approche:"À suivre"};
 const ep=f=>{const e=ENT&&ENT.fonds[f.isin]; return e&&e.e?e:null};
 const bon=f=>{const e=ep(f); return e&&!e.p&&(e.e==="zone"||e.e==="renfort")};
 const ddtxt=v=>(v>0?"+":"")+v.toFixed(1).replace(".",",")+" %";
 function epHTML(f){const e=ep(f); if(!e) return "";
-  return e.p?`<div class="ep ep-propre" title="Baisse depuis son plus haut nettement supérieure à celle de sa famille : elle vient du fonds, pas du marché">Baisse propre au fonds · ${ddtxt(e.dd)}</div>`
+  return e.p?`<div class="ep ep-propre" title="Baisse nettement plus forte que celle de sa famille : elle vient du fonds, pas du marché">Attendre · ${ddtxt(e.dd)}</div>`
             :`<div class="ep ep-${e.e}" title="Baisse depuis son plus haut des 12 derniers mois">${EPL[e.e]} · ${ddtxt(e.dd)}</div>`}
 function appliquerClassement(C){
   const by=new Map(D.map(f=>[f.isin,f]));
@@ -347,10 +353,10 @@ function render(){
       const nEp=top.filter(bon).length, autres=o.shown.slice(3).filter(f=>bon(f)&&f.f_score>=80).slice(0,2);
       if(st.ep&&!nEp&&!autres.length) continue;
       html+=`<article class="card"><h3>${esc(o.name)}</h3>
-        <div class="meta"><span>${n} classé${n>1?"s":""} sur ${o.all.length}</span>${nEp?`<span class="ep-count">${nEp} en point d'entrée</span>`:""}${n>0&&n<4?`<span class="flag">Groupe réduit</span>`:""}${st.sri<7?`<span>SRI ≤ ${st.sri}</span>`:""}</div>
+        <div class="meta"><span>${n} classé${n>1?"s":""} sur ${o.all.length}</span>${nEp?`<span class="ep-count">${nEp} à un bon moment</span>`:""}${n>0&&n<4?`<span class="flag">Groupe réduit</span>`:""}${st.sri<7?`<span>SRI ≤ ${st.sri}</span>`:""}</div>
         ${n===0?`<div class="excl">Aucun fonds avec 5 ans d'historique dans ce groupe.</div>`:
           top.length?top.map((f,i)=>rowHTML(f,P,i)).join(""):`<div class="excl">Aucun fonds classé ne respecte ce niveau de risque.</div>`}
-        ${autres.length?`<div class="ep-autres"><b>Aussi en point d'entrée</b> (notés 80+) : ${autres.map(f=>`${esc(f.nom)} <span class="sg">n°${f.f_rang} · note ${Math.round(f.f_score)} · ${ddtxt(ENT.fonds[f.isin].dd)}</span>`).join(" ; ")}</div>`:""}
+        ${autres.length?`<div class="ep-autres"><b>Aussi à un bon moment</b> (notés 80+) : ${autres.map(f=>`${esc(f.nom)} <span class="sg">n°${f.f_rang} · note ${Math.round(f.f_score)} · ${ddtxt(ENT.fonds[f.isin].dd)}</span>`).join(" ; ")}</div>`:""}
         ${open?fullTable(o,P):""}
         ${o.young.length?`<div class="excl">Non classés (historique &lt; 5 ans) : ${o.young.slice(0,4).map(f=>esc(f.nom)).join(", ")}${o.young.length>4?` et ${o.young.length-4} autres`:""}.</div>`:""}
         ${o.shown.length>3?`<button class="more" data-open="${esc(o.name)}">${open?"Masquer le classement complet":`Voir le classement complet (${o.shown.length})`}</button>`:""}
@@ -358,7 +364,7 @@ function render(){
     }
     html+=`</div></section>`;
   }
-  $("#main").innerHTML=html||`<div class="empty">Aucune famille n'a de fonds bien noté en point d'entrée cette semaine.</div>`;
+  $("#main").innerHTML=html||`<div class="empty">Aucun fonds n'est à un bon moment cette semaine.</div>`;
 }
 $("#classes").innerHTML=CLASSES.map((c,i)=>`<button class="chip" data-cls="${i}" aria-pressed="${i===0}">${c[0]}</button>`).join("");
 document.addEventListener("click",e=>{
@@ -375,7 +381,7 @@ render();
 Promise.all([fetch("classement.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null),
              fetch("entrees.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null)])
  .then(([C,E])=>{ if(C){CLS=C;appliquerClassement(C);} ENT=E; render();
-   if(E){const n=Object.values(E.fonds).filter(v=>!v.p&&(v.e==="zone"||v.e==="renfort")).length; $("#ep").textContent=`Points d'entrée (${n})`;} });
+   if(E){const n=Object.values(E.fonds).filter(v=>!v.p&&(v.e==="zone"||v.e==="renfort")).length; $("#ep").textContent=`Bon moment (${n})`;} });
 </script>
 <script>
 fetch("scan.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(S=>{

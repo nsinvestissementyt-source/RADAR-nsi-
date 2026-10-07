@@ -104,6 +104,28 @@ header.top img{width:36px;height:auto}
 .epinfo,.reco{grid-column:2/4;font-size:12.5px;line-height:1.45;padding:7px 10px;border-radius:8px;margin-top:2px}
 .epinfo{background:var(--go-bg);color:var(--ink)}
 .reco{background:var(--watch-bg);color:var(--ink)}.reco b{color:var(--watch)}
+/* Trois repères seulement : Bon moment (vert), À suivre (jaune), Attendre (rouge) ; rien sinon */
+.s-renfort,.s-zone,.s-favorable{color:var(--go);background:var(--go-bg)}
+.s-surveiller{color:var(--watch);background:var(--watch-bg)}
+.s-prudence,.s-suspendu{color:var(--stop);background:var(--stop-bg)}
+.s-neutre,.s-macro,.s-manuel,.s-none,.s-non_suivi,.s-historique_court{display:none!important}
+.howbtn{border:1px solid var(--line);background:var(--surface);color:var(--gold-ink);font:inherit;font-size:13px;font-weight:700;padding:7px 14px;border-radius:999px;cursor:pointer}
+.howbtn::before{content:"i";display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;background:var(--gold);color:#1E2D45;font-size:11px;font-weight:800;margin-right:7px;font-family:Georgia,serif}
+.controls .howbtn{margin-left:auto}
+footer .wrap.foot1{display:flex;gap:12px 20px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding-block:16px}
+.modal{position:fixed;inset:0;z-index:50;background:rgba(14,22,38,.55);display:none;align-items:center;justify-content:center;padding:16px}
+.modal.on{display:flex}
+.mbox{position:relative;background:var(--surface);color:var(--ink);border-radius:14px;max-width:880px;width:100%;max-height:calc(100vh - 32px);overflow:auto;padding:26px 28px 24px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.mbox h2{font-family:var(--display);font-weight:400;font-size:26px;margin:0 36px 16px 0}
+.mclose{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:0;background:var(--soft);color:var(--ink);font-size:22px;line-height:1;cursor:pointer}
+.mclose:hover{background:var(--line)}.mclose:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:18px 26px;font-size:13.5px;line-height:1.5}
+.mgrid h4{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-ink);margin:0 0 6px}
+.mgrid p{margin:0 0 8px;color:var(--muted)}.mgrid p b{color:var(--ink)}
+.mleg{list-style:none;margin:0 0 8px;padding:0;display:grid;gap:8px;color:var(--muted)}
+.mleg .chip{margin-right:6px}
+.mwarn{grid-column:1/-1;border-top:1px solid var(--line);padding-top:12px}
+@media (max-width:600px){.mbox{padding:20px 18px}.mgrid{grid-template-columns:1fr}.controls .howbtn{margin-left:0}}
 </style>
 </head><body>
 <header class="top"><div class="wrap">
@@ -118,6 +140,7 @@ header.top img{width:36px;height:auto}
       <button id="m-capital" aria-pressed="true">Versement initial</button>
       <button id="m-dca" aria-pressed="false">Versements programmés</button>
     </div>
+    <button class="howbtn" id="how" type="button" aria-haspopup="dialog">Comment ça marche</button>
   </div>
   <div class="layout">
     <aside class="side">
@@ -136,14 +159,34 @@ header.top img{width:36px;height:auto}
   </div>
 </main>
 
-<footer><div class="wrap">
-  <div><h4>Comment sont choisis les fonds</h4>
-    <p style="margin:0">Chaque poche reprend la répartition du modèle NSI. Le fonds retenu est le mieux noté de sa poche (performance 5 ans, régularité, résistance aux baisses, frais). Cliquez sur une ligne pour voir les alternatives : uniquement des fonds notés 80/100 ou plus, du mieux noté au moins bien noté.</p></div>
-  <div><h4>Lecture de l'état radar</h4>
-    <ul><li><b>Point d'entrée</b> : moment favorable pour renforcer la poche.</li><li><b>À surveiller</b> : baisse en cours, proche du seuil.</li><li><b>Prudence</b> / <b>suspendu</b> : différer les nouveaux versements sur cette poche.</li></ul></div>
-  <div><h4>Avertissement</h4>
-    <p style="margin:0">Portefeuilles indicatifs, outil interne d'aide à la décision. Ils ne remplacent ni l'analyse du dossier ni l'adéquation au profil, aux objectifs et à l'horizon du client. Les performances passées ne préjugent pas des performances futures.</p></div>
+<footer><div class="wrap foot1">
+  <span>Portefeuilles indicatifs, outil interne d'aide à la décision NSI. Les performances passées ne préjugent pas des performances futures.</span>
+  <button class="howbtn" type="button" data-how>Comment ça marche</button>
 </div></footer>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mtitle">
+  <div class="mbox">
+    <button class="mclose" id="mclose" type="button" aria-label="Fermer">×</button>
+    <h2 id="mtitle">Comment fonctionnent les portefeuilles</h2>
+    <div class="mgrid">
+      <section><h4>Les fonds retenus</h4>
+        <p>Chaque poche suit la répartition du modèle NSI. On retient le fonds le mieux noté de la poche. En cliquant sur une ligne, vous voyez jusqu'à 3 alternatives, toutes notées 80/100 ou plus.</p>
+        <p>Choix NSI imposés : ESG Tendances Pierre (immobilier) et Jupiter Merian (diversifiés).</p></section>
+      <section><h4>La note sur 100</h4>
+        <p><b>60 %</b> note sur 5 ans : performance (35 %), régularité (25 %), pire année (15 %), frais (15 %), performance 2025 (10 %).</p>
+        <p><b>40 %</b> note sur 3 ans glissants, mise à jour chaque mois. Un fonds entre dans le top 3 s'il dépasse le moins bien noté d'au moins 5 points, deux mois de suite.</p></section>
+      <section><h4>Les trois repères</h4>
+        <ul class="mleg">
+          <li><span class="chip s-zone">Bon moment</span> le fonds a nettement baissé depuis son plus haut, ou le marché est favorable : intéressant pour investir.</li>
+          <li><span class="chip s-surveiller">À suivre</span> la baisse approche du seuil : pas encore, mais à regarder.</li>
+          <li><span class="chip s-prudence">Attendre</span> différer les nouveaux versements sur ce fonds ou cette poche.</li>
+        </ul>
+        <p>Sans repère : rien à signaler. En <b>versement initial</b>, un fonds à un bon moment peut remplacer le fonds retenu, ou apparaître en <b>« À regarder »</b> s'il est proche.</p></section>
+      <section class="mwarn"><h4>Avertissement</h4>
+        <p>Portefeuilles indicatifs, outil interne d'aide à la décision. Ils ne remplacent ni l'analyse du dossier ni l'adéquation au profil, aux objectifs et à l'horizon du client. Les performances passées ne préjugent pas des performances futures.</p></section>
+    </div>
+  </div>
+</div>
 
 <script>
 const CAT={euro:["Fonds en euros","var(--c-euro)"],att:["Fonds d'attente","var(--c-att)"],ps:["Produit structuré","var(--c-ps)"],obl:["Obligataire et décorrélation","var(--c-obl)"],div:["Diversifiés","var(--c-div)"],immo:["Immobilier","var(--c-immo)"],act:["Actions","var(--c-act)"]};
@@ -208,9 +251,9 @@ function ent(f){const e=ENT&&ENT.fonds[f.isin]; return e&&e.e?e:null}
 function bonus(f){const e=ent(f); if(!e||e.p) return 0;
   const fa=RAD&&RAD.fams.find(x=>x.famille===f.fam); if(fa&&["prudence","suspendu"].includes(fa.etat)) return 0;
   return {renfort:10,zone:6,approche:3}[e.e]||0}
-const EPL={renfort:"seuil de renforcement",zone:"point d'entrée",approche:"en approche du point d'entrée"};
+const EPL={renfort:"bon moment, baisse forte",zone:"bon moment",approche:"à suivre"};
 const ddtxt=v=>fr(v)+" %";
-const LAB={renfort:"Renforcement",zone:"Point d'entrée",favorable:"Contexte favorable",surveiller:"À surveiller",prudence:"Prudence",suspendu:"Signal suspendu",neutre:"Neutre",manuel:"Suivi manuel",macro:"Suivi marché",none:"Non suivi"};
+const LAB={renfort:"Bon moment",zone:"Bon moment",favorable:"Bon moment",surveiller:"À suivre",prudence:"Attendre",suspendu:"Attendre",neutre:"",manuel:"",macro:"",none:""};
 const chip=s=>`<span class="chip s-${s}">${LAB[s]||s}</span>`;
 const fr=(v,d=1)=>v==null?"–":v.toFixed(d).replace(".",",");
 const pct=v=>v==null?"–":(v>0?"+":"")+fr(v)+" %";
@@ -269,9 +312,9 @@ function render(){
       const id=k, op=st.open.has(id), stt=fundState(f.isin,f.fam||sl.fam);
       html+=`<div class="fund" tabindex="0" data-o="${id}" aria-expanded="${op}"><div class="w">${w} %</div>
         <div style="min-width:0"><div class="nm">${esc(f.nom)}</div><div class="meta">${esc(sl.role)} · ${f.why?esc(f.why):`${esc(f.fam)} · n°${f.rang} sur ${f.n}`}${f.devise&&f.devise!=="EUR"?` · ${f.devise}`:""}</div></div>
-        <div class="right"><div class="note">${f.note==null?"Choix NSI":`${f.note}<small> / 100</small>`}</div>${ch&&ch.swap?`<span class="chip s-zone">Meilleur point d'entrée</span>`:stt?chip(stt):""}</div>
-        ${ch&&ch.swap?`<div class="epinfo">Choisi pour son point d'entrée (${ddtxt(ent(f).dd)} depuis son plus haut, ${EPL[ent(f).e]}) à la place de <b>${esc(ch.swap.de.nom)}</b> (note ${ch.swap.de.note}${ent(ch.swap.de)?`, ${ddtxt(ent(ch.swap.de).dd)}`:", proche de son plus haut"}). Score qualité + entrée : ${ch.swap.score} contre ${ch.swap.scoreDe}.</div>`:""}
-        ${ch&&ch.reco?`<div class="reco"><b>À regarder</b> : ${esc(ch.reco.f.nom)} · note ${ch.reco.f.note} · ${ddtxt(ent(ch.reco.f).dd)} depuis son plus haut (${EPL[ent(ch.reco.f).e]}) · ${esc(ch.reco.f.fam)}. Score ${ch.reco.score} contre ${ch.reco.scoreMain} pour le fonds retenu : bon point d'entrée, à étudier.</div>`:""}
+        <div class="right"><div class="note">${f.note==null?"Choix NSI":`${f.note}<small> / 100</small>`}</div>${ch&&ch.swap?`<span class="chip s-zone">Bon moment</span>`:stt?chip(stt):""}</div>
+        ${ch&&ch.swap?`<div class="epinfo">Choisi car il est à un bon moment (${ddtxt(ent(f).dd)} depuis son plus haut) à la place de <b>${esc(ch.swap.de.nom)}</b> (note ${ch.swap.de.note}${ent(ch.swap.de)?`, ${ddtxt(ent(ch.swap.de).dd)}`:", proche de son plus haut"}). Score qualité + entrée : ${ch.swap.score} contre ${ch.swap.scoreDe}.</div>`:""}
+        ${ch&&ch.reco?`<div class="reco"><b>À regarder</b> : ${esc(ch.reco.f.nom)} · note ${ch.reco.f.note} · ${ddtxt(ent(ch.reco.f).dd)} depuis son plus haut (${EPL[ent(ch.reco.f).e]}) · ${esc(ch.reco.f.fam)}. Score ${ch.reco.score} contre ${ch.reco.scoreMain} pour le fonds retenu : à étudier.</div>`:""}
         <div class="figs"><span>${f.perfLab||"5 ans"} <strong class="${cls(f.net5)}">${pct(f.net5)}</strong>/an</span><span>2025 <strong class="${cls(f.p2025)}">${pct(f.p2025)}</strong></span><span>Pire année <strong class="${cls(f.pire)}">${pct(f.pire)}</strong></span><span>Frais <strong>${fr(f.frais,2)} %</strong></span><span>SRI <strong>${f.sri}</strong></span></div>
         ${op?`<div class="alts"><div><span>ISIN <span class="isin">${f.isin}</span> · ${esc(f.sg)}</span></div>${alts.length?alts.map((a,i)=>`<div><span><b>Alternative ${i+1}</b> : ${esc(a.nom)} (${esc(a.sg)}) · ${esc(a.fam)}</span><span>note <b>${a.note}</b> · 5 ans ${pct(a.net5)}/an · SRI ${a.sri}${ent(a)&&!ent(a).p?` · ${ddtxt(ent(a).dd)}`:""} ${chip(fundState(a.isin,a.fam)||"none")}</span></div>`).join(""):`<div><span>Aucun autre fonds noté ${NOTE_MIN}/100 ou plus pour cette poche : le fonds retenu reste le meilleur choix.</span></div>`}</div>`:""}
       </div>`;
@@ -280,8 +323,8 @@ function render(){
   }
   $("#cats").innerHTML=html;
   $("#pmode").textContent=st.mode==="capital"
-    ? "Versement initial : le point d'entrée compte. Un fonds noté 80+ en baisse depuis son plus haut reçoit un bonus (+3 en approche, +6 au point d'entrée, +10 au renforcement) et prend la place du fonds retenu s'il le dépasse ; s'il en est proche, il est signalé « À regarder ». Pas de bonus si la baisse est propre au fonds. La poche d'attente et le produit structuré servent à investir progressivement."
-    : "Versements programmés : la régularité des versements lisse le point d'entrée, la poche d'attente n'est donc pas nécessaire.";
+    ? "Versement initial : le moment d'entrée compte. Un fonds noté 80+ qui est à un bon moment peut prendre la place du fonds retenu, ou être signalé « À regarder » s'il en est proche. Détails dans « Comment ça marche »."
+    : "Versements programmés : la régularité des versements lisse le prix d'entrée, la poche d'attente n'est donc pas nécessaire.";
 }
 $("#profiles").innerHTML=Object.entries(PROFILES).map(([k,p])=>`<button class="pbtn" data-p="${k}"><i style="background:${p.c}"></i>${p.label}</button>`).join("");
 document.addEventListener("click",e=>{
@@ -290,6 +333,13 @@ document.addEventListener("click",e=>{
   const o=e.target.closest("[data-o]"); if(o){const k=o.dataset.o;st.open.has(k)?st.open.delete(k):st.open.add(k);render();}
 });
 document.addEventListener("keydown",e=>{const o=e.target.closest&&e.target.closest("[data-o]");if(o&&(e.key==="Enter"||e.key===" ")){e.preventDefault();o.click()}});
+const modal=$("#modal");
+function ouvrirAide(){modal.classList.add("on");document.body.style.overflow="hidden";$("#mclose").focus()}
+function fermerAide(){modal.classList.remove("on");document.body.style.overflow="";}
+$("#mclose").onclick=fermerAide; modal.addEventListener("click",e=>{if(e.target===modal)fermerAide()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&modal.classList.contains("on"))fermerAide()});
+document.querySelectorAll("#how,[data-how]").forEach(b=>b.onclick=ouvrirAide);
+ouvrirAide();
 $("#m-capital").onclick=()=>{st.mode="capital";render()}; $("#m-dca").onclick=()=>{st.mode="dca";render()};
 const charge=u=>fetch(u,{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null);
 Promise.all([fetch("top3.json",{cache:"no-store"}).then(r=>r.json()),charge("radar.json"),charge("classement.json"),charge("entrees.json")])

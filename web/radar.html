@@ -125,6 +125,12 @@ header.top img{width:36px;height:auto}
 .status{display:flex;flex-wrap:wrap;gap:8px 22px;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 16px;font-size:13px;color:var(--muted)}
 .status p{margin:0}.status b{color:var(--ink)}
 .skpi{display:flex;gap:6px 18px;flex-wrap:wrap}.skpi b{font-size:16px;font-variant-numeric:tabular-nums;margin-right:2px}
+/* Trois repères seulement : Bon moment (vert), À suivre (jaune), Attendre (rouge) ; rien sinon */
+.s-renfort,.s-zone,.s-favorable{color:var(--go);background:var(--go-bg)}
+.s-surveiller{color:var(--watch);background:var(--watch-bg)}
+.s-prudence,.s-suspendu{color:var(--stop);background:var(--stop-bg)}
+.legend{align-items:center;font-size:12.5px;color:var(--muted);gap:8px 10px}
+.s-neutre,.s-macro,.s-manuel,.s-none,.s-non_suivi,.s-historique_court{display:none!important}
 </style>
 </head><body>
 
@@ -134,7 +140,7 @@ header.top img{width:36px;height:auto}
 </div></header>
 
 <main class="wrap">
-  <div class="status"><p id="sub">Chargement des données…</p><div class="skpi"><span><b id="k-entry">–</b> en point d'entrée</span><span><b id="k-watch">–</b> à surveiller</span><span><b id="k-funds">–</b> fonds suivis</span></div></div>
+  <div class="status"><p id="sub">Chargement des données…</p><div class="skpi"><span><b id="k-entry">–</b> familles à un bon moment</span><span><b id="k-watch">–</b> à suivre</span><span><b id="k-funds">–</b> fonds suivis</span></div></div>
   <section>
     <h2>Contexte de marché</h2>
     <p class="lead">Ces indicateurs pilotent les signaux obligataires et monétaires, et conditionnent le signal sur l'immobilier coté.</p>
@@ -145,8 +151,9 @@ header.top img{width:36px;height:auto}
     <h2>État des familles</h2>
     <p class="lead">Pour chaque famille, le top 3 Swiss Life et sa baisse depuis le plus haut des 12 derniers mois. La jauge montre le seuil de point d'entrée et le seuil de renforcement. Cliquez sur un fonds pour voir sa courbe.</p>
     <div class="legend">
-      <span class="chip s-renfort">Renforcement</span><span class="chip s-zone">Point d'entrée</span><span class="chip s-favorable">Contexte favorable</span>
-      <span class="chip s-surveiller">À surveiller</span><span class="chip s-suspendu">Signal suspendu</span><span class="chip s-prudence">Prudence</span><span class="chip s-neutre">Neutre</span>
+      <span class="chip s-zone">Bon moment</span> baisse marquée ou marché favorable
+      <span class="chip s-surveiller">À suivre</span> baisse proche du seuil
+      <span class="chip s-prudence">Attendre</span> différer les nouveaux versements
     </div>
     <div class="filters" id="ffilters"></div>
     <div class="fams" id="fams"></div>
@@ -200,13 +207,13 @@ const fr=(v,d=1)=>v==null?"–":v.toFixed(d).replace(".",",");
 const pct=v=>v==null?"–":(v>0?"+":"")+fr(v)+" %";
 const cls=v=>v==null?"":v>=0?"pos":"neg";
 const dfmt=s=>{const [y,m,d]=s.split("-");return d?`${d}/${m}/${y}`:`${m}/${y}`};
-const LAB={renfort:"Renforcement",zone:"Point d'entrée",favorable:"Contexte favorable",surveiller:"À surveiller",prudence:"Prudence",suspendu:"Signal suspendu",neutre:"Neutre",manuel:"Suivi manuel",macro:"Suivi par le marché",non_suivi:"Non suivi",historique_court:"Historique court"};
+const LAB={renfort:"Bon moment",zone:"Bon moment",favorable:"Bon moment",surveiller:"À suivre",prudence:"Attendre",suspendu:"Attendre",neutre:"",manuel:"",macro:"",none:"",non_suivi:"",historique_court:""};
 const chip=s=>`<span class="chip s-${s}">${LAB[s]||s}</span>`;
 
 /* ---------- header ---------- */
 const nTracked=R.funds.filter(f=>f.spark).length;
 $("#sub").innerHTML=`Données au <b>${dfmt(R.asof)}</b> · mise à jour chaque lundi`;
-$("#k-entry").textContent=R.fams.filter(f=>["zone","renfort"].includes(f.etat)).length;
+$("#k-entry").textContent=R.fams.filter(f=>["zone","renfort","favorable"].includes(f.etat)).length;
 $("#k-watch").textContent=R.fams.filter(f=>f.etat==="surveiller").length;
 $("#k-funds").textContent=nTracked;
 
@@ -240,7 +247,7 @@ const tiles=[
   {lab:"€STR et inflation",val:fr(m.estr.v,2)+" %",small:`inflation ${fr(m.infl.v,1)} %`,state:st["Monétaire"].etat,
    txt:`Taux du monétaire (or) comparé à l'inflation de la zone euro sur un an (ligne grise).`,
    svg:line([{pts:m.infl.hist.map(p=>[p[0],p[1]]),color:"var(--muted)",w:1.2},{pts:m.estr.hist.filter((p,i,a)=>i%4===0||i===a.length-1),color:"var(--gold)"}],{})},
-  {lab:"Immobilier coté",val:LAB[st["Immobilier coté"].etat],small:"",state:st["Immobilier coté"].etat,
+  {lab:"Immobilier coté",val:LAB[st["Immobilier coté"].etat]||"Rien à signaler",small:"",state:st["Immobilier coté"].etat,
    txt:st["Immobilier coté"].msg||"Le signal de baisse s'applique normalement : les taux longs ne montent plus.",svg:""}
 ];
 $("#macro").innerHTML=tiles.map(t=>`<div class="tile"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><span class="lab">${t.lab}</span>${chip(t.state)}</div>
@@ -248,7 +255,7 @@ $("#macro").innerHTML=tiles.map(t=>`<div class="tile"><div style="display:flex;j
 $("#macro .tile:last-child .val").style.fontSize="22px";
 
 /* ---------- families ---------- */
-const GROUPS=[["Toutes",null],["Points d'entrée",f=>["zone","renfort"].includes(f.etat)],["Monétaire & obligations",f=>/^(Monétaire|Obligations)/.test(f.famille)],["Diversifiés",f=>/^(Diversifiés|Gestion)/.test(f.famille)],["Actions",f=>/^Actions/.test(f.famille)],["Thématiques & réel",f=>/^(Thématiques|Ressources|Autres|Immobilier|Capital)/.test(f.famille)]];
+const GROUPS=[["Toutes",null],["Bon moment",f=>["zone","renfort","favorable"].includes(f.etat)],["Monétaire & obligations",f=>/^(Monétaire|Obligations)/.test(f.famille)],["Diversifiés",f=>/^(Diversifiés|Gestion)/.test(f.famille)],["Actions",f=>/^Actions/.test(f.famille)],["Thématiques & réel",f=>/^(Thématiques|Ressources|Autres|Immobilier|Capital)/.test(f.famille)]];
 let gsel=0; const open=new Set();
 $("#ffilters").innerHTML=GROUPS.map((g,i)=>`<button class="fbtn" data-g="${i}" aria-pressed="${i===0}">${g[0]}</button>`).join("");
 function gauge(f){
