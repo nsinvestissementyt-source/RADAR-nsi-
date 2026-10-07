@@ -126,6 +126,27 @@ footer .wrap.foot1{display:flex;gap:12px 20px;align-items:center;justify-content
 .mleg .chip{margin-right:6px}
 .mwarn{grid-column:1/-1;border-top:1px solid var(--line);padding-top:12px}
 @media (max-width:600px){.mbox{padding:20px 18px}.mgrid{grid-template-columns:1fr}.controls .howbtn{margin-left:0}}
+.fund{grid-template-columns:52px minmax(0,1fr) auto auto;align-items:center;row-gap:8px}
+.fund .w{align-self:center;white-space:nowrap}
+.nmc{min-width:0}.fund .nm{overflow-wrap:anywhere}
+.fund.open .nm{color:var(--gold-ink)}
+.right{grid-auto-flow:column;align-items:center;gap:10px}
+.altbtn{position:relative;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.altbtn:hover{border-color:var(--gold)}.altbtn[aria-expanded="true"]{background:var(--soft)}
+.altbtn .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--watch);margin-left:7px;vertical-align:1px}
+.det{grid-column:2/-1;display:grid;gap:6px;padding:4px 0 2px}
+.det .figs,.alt .figs{grid-column:auto}
+.alts{grid-column:2/-1;display:grid;gap:0;padding:4px 14px;margin-top:2px}
+.alts .alt{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;padding:10px 0;border-top:1px solid var(--line)}
+.alt:first-child{border-top:0}
+.alts .alt-nm{display:grid;gap:2px;min-width:0;justify-content:start}.alt-nm b{font-size:13.5px}
+.alts .alt-r{display:flex;gap:8px;align-items:center;justify-content:flex-end;align-self:start}.alt-r .note{font-size:15px}
+.alts .alt .figs{grid-column:1/-1;display:flex;justify-content:flex-start;gap:4px 14px}
+.alts .alt-reco{background:var(--watch-bg);margin:6px -8px;padding:10px 8px;border-radius:8px;border-top:0}
+.reco-why{color:var(--ink)}
+.s-regarder{color:var(--watch);background:var(--surface);border:1px solid var(--watch)}
+.mwarn p{font-weight:700;color:var(--ink)!important}
+@media (max-width:640px){.fund{grid-template-columns:48px minmax(0,1fr) auto}.fund .w{font-size:18px}.altbtn{grid-column:2/-1;justify-self:start}.det,.alts{grid-column:1/-1}}
 </style>
 </head><body>
 <header class="top"><div class="wrap">
@@ -260,7 +281,7 @@ const pct=v=>v==null?"–":(v>0?"+":"")+fr(v)+" %";
 const cls=v=>v==null?"":v>=0?"pos":"neg";
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const $=s=>document.querySelector(s);
-let TOP=null, RAD=null, CLS=null, ENT=null, st={p:"e",mode:"capital",open:new Set()};
+let TOP=null, RAD=null, CLS=null, ENT=null, st={p:"e",mode:"capital",open:new Set(),alt:new Set()};
 try{const v=localStorage.getItem("nsi-pf");if(v)Object.assign(st,JSON.parse(v),{open:new Set()})}catch(e){}
 
 function fundState(isin,fam){
@@ -308,15 +329,25 @@ function render(){
     const sum=list.reduce((a,b)=>a+b.w,0);
     html+=`<div class="cat"><h3><i style="background:${CAT_HEX[c]}"></i>${CAT[c][0]}<span>${sum} %</span></h3>`;
     for(const {k,w,sl,f,alts,ch} of list.sort((a,b)=>b.w-a.w)){
-      if(sl.fixed||!f){ html+=`<div class="fund fixed"><div class="w">${w} %</div><div><div class="nm">${esc(sl.fixed||sl.fam)}</div><div class="meta">${esc(sl.fixedSub||"Aucun fonds classé dans cette famille")}</div></div><div></div></div>`; continue; }
-      const id=k, op=st.open.has(id), stt=fundState(f.isin,f.fam||sl.fam);
-      html+=`<div class="fund" tabindex="0" data-o="${id}" aria-expanded="${op}"><div class="w">${w} %</div>
-        <div style="min-width:0"><div class="nm">${esc(f.nom)}</div><div class="meta">${esc(sl.role)} · ${f.why?esc(f.why):`${esc(f.fam)} · n°${f.rang} sur ${f.n}`}${f.devise&&f.devise!=="EUR"?` · ${f.devise}`:""}</div></div>
+      if(sl.fixed||!f){ html+=`<div class="fund fixed"><div class="w">${w} %</div><div class="nmc"><div class="nm">${esc(sl.fixed||sl.fam)}</div><div class="meta">${esc(sl.fixedSub||"Aucun fonds classé dans cette famille")}</div></div><div></div><div></div></div>`; continue; }
+      const id=k, op=st.open.has(id), oa=st.alt.has(id), stt=fundState(f.isin,f.fam||sl.fam);
+      const reco=ch&&ch.reco?ch.reco.f:null, liste=reco&&!alts.some(x=>x.isin===reco.isin)?[reco,...alts]:alts;
+      const altRow=a=>{const r=reco&&a.isin===reco.isin, e=ent(a);
+        return `<div class="alt${r?" alt-reco":""}"><div class="alt-nm"><b>${esc(a.nom)}</b><span class="meta">${esc(a.sg)} · ${esc(a.fam)}</span>
+          ${r?`<span class="meta reco-why">Bon moment d'entrée (${ddtxt(e.dd)} depuis son plus haut) : score ${ch.reco.score} contre ${ch.reco.scoreMain} pour le fonds retenu.</span>`:""}</div>
+          <div class="alt-r"><span class="note">${a.note}<small> / 100</small></span>${r?`<span class="chip s-regarder">À regarder</span>`:chip(fundState(a.isin,a.fam)||"none")}</div>
+          <div class="figs"><span>5 ans <strong class="${cls(a.net5)}">${pct(a.net5)}</strong>/an</span><span>2025 <strong class="${cls(a.p2025)}">${pct(a.p2025)}</strong></span><span>Pire année <strong class="${cls(a.pire)}">${pct(a.pire)}</strong></span><span>Frais <strong>${fr(a.frais,2)} %</strong></span><span>SRI <strong>${a.sri}</strong></span>${e&&!e.p?`<span>Plus haut <strong>${ddtxt(e.dd)}</strong></span>`:""}</div></div>`};
+      html+=`<div class="fund${op?" open":""}" tabindex="0" data-o="${id}" aria-expanded="${op}"><div class="w">${w} %</div>
+        <div class="nmc"><div class="nm">${esc(f.nom)}</div></div>
         <div class="right"><div class="note">${f.note==null?"Choix NSI":`${f.note}<small> / 100</small>`}</div>${ch&&ch.swap?`<span class="chip s-zone">Bon moment</span>`:stt?chip(stt):""}</div>
-        ${ch&&ch.swap?`<div class="epinfo">Choisi car il est à un bon moment (${ddtxt(ent(f).dd)} depuis son plus haut) à la place de <b>${esc(ch.swap.de.nom)}</b> (note ${ch.swap.de.note}${ent(ch.swap.de)?`, ${ddtxt(ent(ch.swap.de).dd)}`:", proche de son plus haut"}). Score qualité + entrée : ${ch.swap.score} contre ${ch.swap.scoreDe}.</div>`:""}
-        ${ch&&ch.reco?`<div class="reco"><b>À regarder</b> : ${esc(ch.reco.f.nom)} · note ${ch.reco.f.note} · ${ddtxt(ent(ch.reco.f).dd)} depuis son plus haut (${EPL[ent(ch.reco.f).e]}) · ${esc(ch.reco.f.fam)}. Score ${ch.reco.score} contre ${ch.reco.scoreMain} pour le fonds retenu : à étudier.</div>`:""}
-        <div class="figs"><span>${f.perfLab||"5 ans"} <strong class="${cls(f.net5)}">${pct(f.net5)}</strong>/an</span><span>2025 <strong class="${cls(f.p2025)}">${pct(f.p2025)}</strong></span><span>Pire année <strong class="${cls(f.pire)}">${pct(f.pire)}</strong></span><span>Frais <strong>${fr(f.frais,2)} %</strong></span><span>SRI <strong>${f.sri}</strong></span></div>
-        ${op?`<div class="alts"><div><span>ISIN <span class="isin">${f.isin}</span> · ${esc(f.sg)}</span></div>${alts.length?alts.map((a,i)=>`<div><span><b>Alternative ${i+1}</b> : ${esc(a.nom)} (${esc(a.sg)}) · ${esc(a.fam)}</span><span>note <b>${a.note}</b> · 5 ans ${pct(a.net5)}/an · SRI ${a.sri}${ent(a)&&!ent(a).p?` · ${ddtxt(ent(a).dd)}`:""} ${chip(fundState(a.isin,a.fam)||"none")}</span></div>`).join(""):`<div><span>Aucun autre fonds noté ${NOTE_MIN}/100 ou plus pour cette poche : le fonds retenu reste le meilleur choix.</span></div>`}</div>`:""}
+        <button class="altbtn" type="button" data-alt="${id}" aria-expanded="${oa}">${oa?"Masquer":"Voir les alternatives"}${reco&&!oa?`<i class="dot" title="Un fonds à regarder"></i>`:""}</button>
+        ${op?`<div class="det">
+          <div class="meta">${esc(sl.role)} · ${f.why?esc(f.why):`${esc(f.fam)} · n°${f.rang} sur ${f.n}`}${f.devise&&f.devise!=="EUR"?` · ${f.devise}`:""}</div>
+          <div class="figs"><span>${f.perfLab||"5 ans"} <strong class="${cls(f.net5)}">${pct(f.net5)}</strong>/an</span><span>2025 <strong class="${cls(f.p2025)}">${pct(f.p2025)}</strong></span><span>Pire année <strong class="${cls(f.pire)}">${pct(f.pire)}</strong></span><span>Frais <strong>${fr(f.frais,2)} %</strong></span><span>SRI <strong>${f.sri}</strong></span>${ent(f)&&!ent(f).p?`<span>Plus haut <strong>${ddtxt(ent(f).dd)}</strong></span>`:""}</div>
+          <div class="meta">ISIN <span class="isin">${f.isin}</span> · ${esc(f.sg)}</div>
+          ${ch&&ch.swap?`<div class="meta">Choisi car il est à un bon moment (${ddtxt(ent(f).dd)} depuis son plus haut) à la place de <b>${esc(ch.swap.de.nom)}</b> (note ${ch.swap.de.note}). Score qualité + entrée : ${ch.swap.score} contre ${ch.swap.scoreDe}.</div>`:""}
+        </div>`:""}
+        ${oa?`<div class="alts">${liste.length?liste.map(altRow).join(""):`<div class="meta">Aucun autre fonds noté ${NOTE_MIN}/100 ou plus pour cette poche : le fonds retenu reste le meilleur choix.</div>`}</div>`:""}
       </div>`;
     }
     html+=`</div>`;
@@ -328,18 +359,22 @@ function render(){
 }
 $("#profiles").innerHTML=Object.entries(PROFILES).map(([k,p])=>`<button class="pbtn" data-p="${k}"><i style="background:${p.c}"></i>${p.label}</button>`).join("");
 document.addEventListener("click",e=>{
-  const p=e.target.closest("[data-p]"); if(p){st.p=p.dataset.p;st.open.clear();render();return}
+  const p=e.target.closest("[data-p]"); if(p){st.p=p.dataset.p;st.open.clear();st.alt.clear();render();return}
   if(e.target.closest(".isin")) return;
+  const ab=e.target.closest("[data-alt]"); if(ab){const k=ab.dataset.alt;st.alt.has(k)?st.alt.delete(k):st.alt.add(k);render();return}
+  if(e.target.closest(".alts,.det")) return;
   const o=e.target.closest("[data-o]"); if(o){const k=o.dataset.o;st.open.has(k)?st.open.delete(k):st.open.add(k);render();}
 });
-document.addEventListener("keydown",e=>{const o=e.target.closest&&e.target.closest("[data-o]");if(o&&(e.key==="Enter"||e.key===" ")){e.preventDefault();o.click()}});
+document.addEventListener("keydown",e=>{const o=e.target.closest&&e.target.closest("[data-o]");if(o&&e.target===o&&(e.key==="Enter"||e.key===" ")){e.preventDefault();o.click()}});
 const modal=$("#modal");
 function ouvrirAide(){modal.classList.add("on");document.body.style.overflow="hidden";$("#mclose").focus()}
 function fermerAide(){modal.classList.remove("on");document.body.style.overflow="";}
 $("#mclose").onclick=fermerAide; modal.addEventListener("click",e=>{if(e.target===modal)fermerAide()});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&modal.classList.contains("on"))fermerAide()});
 document.querySelectorAll("#how,[data-how]").forEach(b=>b.onclick=ouvrirAide);
-ouvrirAide();
+// La fenêtre s'ouvre à l'arrivée sur le site, pas à chaque changement de page
+let dejaVu=false; try{dejaVu=sessionStorage.getItem("nsi-aide")==="1";sessionStorage.setItem("nsi-aide","1")}catch(e){}
+if(!dejaVu) ouvrirAide();
 $("#m-capital").onclick=()=>{st.mode="capital";render()}; $("#m-dca").onclick=()=>{st.mode="dca";render()};
 const charge=u=>fetch(u,{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null);
 Promise.all([fetch("top3.json",{cache:"no-store"}).then(r=>r.json()),charge("radar.json"),charge("classement.json"),charge("entrees.json")])
