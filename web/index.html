@@ -192,7 +192,8 @@ function choisir(sl,pris){
   if(st.mode==="capital"&&main&&ENT){
     const sc=f=>f.note+bonus(f), ms=sc(main);
     const pool=cand.filter(f=>f.note>=NOTE_MIN&&f.isin!==main.isin&&!pris.has(f.isin));
-    const best=pool.slice().sort((a,b)=>sc(b)-sc(a))[0];
+    // seul le point d'entrée peut faire changer le fonds retenu : le candidat doit avoir un bonus
+    const best=pool.filter(f=>bonus(f)>0).sort((a,b)=>sc(b)-sc(a))[0];
     if(best&&!sl.force&&sc(best)>ms){ swap={de:main,score:sc(best),scoreDe:ms}; main=best; }
     const m2=sc(main);
     const r=pool.filter(f=>f.isin!==main.isin&&bonus(f)>=3&&sc(f)>=m2-5).sort((a,b)=>sc(b)-sc(a))[0];
