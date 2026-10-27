@@ -839,12 +839,26 @@
   ],
   "Actions émergentes": [
    {
+    "isin": "FR0010380675",
+    "nom": "Lazard Actions Emergentes R",
+    "sg": "Lazard Frères Gestion",
+    "sri": 4,
+    "devise": "EUR",
+    "rang": 1,
+    "note": 82,
+    "n": 22,
+    "net5": 10.49,
+    "p2025": 23.29,
+    "pire": -10.88,
+    "frais": 2.29
+   },
+   {
     "isin": "FR0010241240",
     "nom": "HMG Globetrotter C",
     "sg": "HMG Finance",
     "sri": 3,
     "devise": "EUR",
-    "rang": 1,
+    "rang": 2,
     "note": 80,
     "n": 22,
     "net5": 11.42,
@@ -858,27 +872,13 @@
     "sg": "HSBC",
     "sri": 4,
     "devise": "EUR",
-    "rang": 2,
+    "rang": 3,
     "note": 74,
     "n": 22,
     "net5": 18.74,
     "p2025": 7.51,
     "pire": -2.84,
     "frais": 2.31
-   },
-   {
-    "isin": "LU0164881194",
-    "nom": "HSBC GIF Indian Equity AC",
-    "sg": "HSBC",
-    "sri": 4,
-    "devise": "USD",
-    "rang": 3,
-    "note": 71,
-    "n": 22,
-    "net5": 10.71,
-    "p2025": -9.46,
-    "pire": -9.46,
-    "frais": 1.94
    }
   ],
   "Autres actions sectorielles": [
