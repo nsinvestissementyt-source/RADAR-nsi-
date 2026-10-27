@@ -630,7 +630,7 @@
   "isin": "FR0010241240",
   "nom": "HMG Globetrotter C",
   "famille": "Actions émergentes",
-  "rang": 1.0,
+  "rang": 2.0,
   "symbole": "0P0000262S.F",
   "correspondance": "exacte",
   "note": 80,
@@ -641,21 +641,10 @@
   "isin": "LU0708055370",
   "nom": "HSBC GIF Frontier Markets ACEUR",
   "famille": "Actions émergentes",
-  "rang": 2.0,
+  "rang": 3.0,
   "symbole": "0P0000UU8N.F",
   "correspondance": "part sœur",
   "note": 74,
-  "societe": "HSBC",
-  "sri": 4
- },
- {
-  "isin": "LU0164881194",
-  "nom": "HSBC GIF Indian Equity AC",
-  "famille": "Actions émergentes",
-  "rang": 3.0,
-  "symbole": "0P00000XD2",
-  "correspondance": "part sœur",
-  "note": 71,
   "societe": "HSBC",
   "sri": 4
  },
@@ -889,5 +878,16 @@
   "note": 68,
   "societe": "Sofidy",
   "sri": 3
+ },
+ {
+  "isin": "FR0010380675",
+  "nom": "Lazard Actions Emergentes R",
+  "famille": "Actions émergentes",
+  "rang": 1.0,
+  "symbole": "0P00007ZHT.F",
+  "correspondance": "exacte",
+  "note": 82,
+  "societe": "Lazard Frères Gestion",
+  "sri": 4
  }
 ]

@@ -183,14 +183,10 @@
   "Actions émergentes": {
    "top": [
     "FR0010241240",
-    "LU0164881194",
+    "FR0010380675",
     "LU0708055370"
    ],
-   "attente": {
-    "isin": "FR0010380675",
-    "n": 1,
-    "mois": "2026-10"
-   }
+   "attente": null
   },
   "Autres actions sectorielles": {
    "top": [
@@ -253,6 +249,18 @@
    "attente": null
   }
  },
- "journal": [],
+ "journal": [
+  {
+   "date": "2026-10-08",
+   "famille": "Actions émergentes",
+   "entre": "Lazard Actions Emergentes R",
+   "entre_isin": "FR0010380675",
+   "note_entre": 82,
+   "sort": "HSBC GIF Indian Equity AC",
+   "sort_isin": "LU0164881194",
+   "note_sort": 71,
+   "manuel": true
+  }
+ ],
  "dernier_scan": "2026-10"
 }

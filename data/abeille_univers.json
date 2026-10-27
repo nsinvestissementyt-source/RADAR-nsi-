@@ -1,0 +1,1826 @@
+[
+{
+"isin": "FR0000293714",
+"nom": "Ostrum SRI Cash Plus R C EUR",
+"famille": "Monétaire",
+"elig": true
+},
+{
+"isin": "FR001400KPY6",
+"nom": "Ofi Invest ESG Liquidités A",
+"famille": "Monétaire",
+"elig": false
+},
+{
+"isin": "FR0000097495",
+"nom": "Ofi Invest Oblig International",
+"famille": "Obligations haut rendement",
+"elig": true
+},
+{
+"isin": "FR0010230490",
+"nom": "Lazard Credit Opportunities RC EUR",
+"famille": "Obligations flexibles",
+"elig": true
+},
+{
+"isin": "LU0406674589",
+"nom": "JPMF Global Government Bond D Acc EUR",
+"famille": "Obligations EUR & crédit",
+"elig": true
+},
+{
+"isin": "LU0408846458",
+"nom": "JPMF Global Corporate Bond A Acc EUR H",
+"famille": "Obligations EUR & crédit",
+"elig": true
+},
+{
+"isin": "LU0503630153",
+"nom": "Pictet Gbl Sust Credit HP EUR",
+"famille": "Obligations EUR & crédit",
+"elig": true
+},
+{
+"isin": "LU0203348601",
+"nom": "Schroder Global Corp Bond B Acc EUR H",
+"famille": "Obligations EUR & crédit",
+"elig": true
+},
+{
+"isin": "FR0011034495",
+"nom": "EdR SICAV Financial Bonds A EUR",
+"famille": "Obligations EUR & crédit",
+"elig": true
+},
+{
+"isin": "LU0906524193",
+"nom": "Amundi Funds Gbl Agg Bd A EUR Hgd C",
+"famille": "Obligations EUR & crédit",
+"elig": true
+},
+{
+"isin": "FR0012184042",
+"nom": "Ofi Invest Global Sovereign Bonds A",
+"famille": "Obligations EUR & crédit",
+"elig": true
+},
+{
+"isin": "LU1165644672",
+"nom": "IVO Em Mkt Corporate Debt EUR-R",
+"famille": "Obligations émergentes",
+"elig": true
+},
+{
+"isin": "IE00BD5CTX77",
+"nom": "BNY Mellon GF Gbl SD HYB Fd EUR H Acc H",
+"famille": "Obligations haut rendement",
+"elig": true
+},
+{
+"isin": "LU1644441120",
+"nom": "Candriam Sustain Bond Gbl HY C EUR Acc",
+"famille": "Obligations haut rendement",
+"elig": true
+},
+{
+"isin": "FR0013305208",
+"nom": "Ofi Invest Alpha Yield C",
+"famille": "Obligations flexibles",
+"elig": true
+},
+{
+"isin": "LU1670724373",
+"nom": "M&G Lux Optimal Income A EUR Acc",
+"famille": "Obligations EUR & crédit",
+"elig": true
+},
+{
+"isin": "FR0013513132",
+"nom": "R-co 4Change Green Bonds C EUR",
+"famille": "Obligations EUR & crédit",
+"elig": true
+},
+{
+"isin": "LU2155808491",
+"nom": "BNPP Global Absolute Ret Bd clc PF € Acc",
+"famille": "Obligations flexibles",
+"elig": true
+},
+{
+"isin": "FR0014008UN8",
+"nom": "La Française Credit Innovation R C EUR",
+"famille": "Obligations haut rendement",
+"elig": false
+},
+{
+"isin": "LU2346313575",
+"nom": "LO Funds Fallen Angels Recovery HEUR PA",
+"famille": "Obligations EUR & crédit",
+"elig": false
+},
+{
+"isin": "IE0008WZSY62",
+"nom": "BNY Mellon GF Gbl SD HYB Fd EUR A Acc",
+"famille": "Obligations haut rendement",
+"elig": false
+},
+{
+"isin": "LU3302264125",
+"nom": "Mandarine Global Target 2032 C",
+"famille": NaN,
+"elig": false
+},
+{
+"isin": "LU0115144304",
+"nom": "Invesco Euro Bond E Acc EUR",
+"famille": "Obligations EUR & crédit",
+"elig": true
+},
+{
+"isin": "FR0010149120",
+"nom": "Carmignac Sécurité AW EUR Acc",
+"famille": "Obligations court terme & inflation",
+"elig": true
+},
+{
+"isin": "LU0336084032",
+"nom": "Carmignac Pf Flexible Bond A EUR Acc",
+"famille": "Obligations flexibles",
+"elig": true
+},
+{
+"isin": "FR0000014276",
+"nom": "Ofi Invest Obliréa Euro",
+"famille": "Obligations EUR & crédit",
+"elig": true
+},
+{
+"isin": "IE0005315449",
+"nom": "Muzinich Europeyield Fund A EUR Acc H",
+"famille": "Obligations haut rendement",
+"elig": true
+},
+{
+"isin": "FR0010697532",
+"nom": "Keren Corporate C",
+"famille": "Obligations haut rendement",
+"elig": true
+},
+{
+"isin": "BE0948651881",
+"nom": "DPAM B Bonds EUR Government L EUR",
+"famille": "Obligations EUR & crédit",
+"elig": true
+},
+{
+"isin": "FR0010807107",
+"nom": "R-co Conviction Credit Euro F EUR",
+"famille": "Obligations EUR & crédit",
+"elig": true
+},
+{
+"isin": "FR0011034818",
+"nom": "Schelcher Optimal Income P",
+"famille": "Obligations flexibles",
+"elig": true
+},
+{
+"isin": "FR0010986315",
+"nom": "DNCA Sérénité Plus C",
+"famille": "Obligations court terme & inflation",
+"elig": false
+},
+{
+"isin": "FR0011299379",
+"nom": "Sunny Euro Crédit R",
+"famille": "Obligations haut rendement",
+"elig": true
+},
+{
+"isin": "FR0011350685",
+"nom": "Ostrum SRI Crossover L/C EUR",
+"famille": "Obligations EUR & crédit",
+"elig": true
+},
+{
+"isin": "FR0011147594",
+"nom": "Omnibond R",
+"famille": "Obligations EUR & crédit",
+"elig": true
+},
+{
+"isin": "LU0935222066",
+"nom": "NatixisAM Ostrum Credit Short Dur R/A€",
+"famille": "Obligations EUR & crédit",
+"elig": true
+},
+{
+"isin": "FR0012696102",
+"nom": "Sunny Optimal Income R",
+"famille": "Gestion alternative",
+"elig": true
+},
+{
+"isin": "LU1313770452",
+"nom": "Candriam Sustain Bond Euro Corp C € Acc",
+"famille": "Obligations EUR & crédit",
+"elig": true
+},
+{
+"isin": "LU1486845537",
+"nom": "ODDO BHF Euro Credit Sht Dur CR-EUR Acc",
+"famille": "Obligations haut rendement",
+"elig": true
+},
+{
+"isin": "LU1161527038",
+"nom": "EdR Fd Bond Allocation A EUR",
+"famille": "Obligations flexibles",
+"elig": true
+},
+{
+"isin": "FR0013274958",
+"nom": "Ofi Invest Euro High Yield R",
+"famille": "Obligations haut rendement",
+"elig": true
+},
+{
+"isin": "FR0011799931",
+"nom": "Ofi Invest ESG Credit Bond 1-3 R",
+"famille": "Obligations court terme & inflation",
+"elig": true
+},
+{
+"isin": "FR0013392057",
+"nom": "Ofi Invest ISR Crédit Bonds Euro A",
+"famille": "Obligations EUR & crédit",
+"elig": true
+},
+{
+"isin": "LU2080993616",
+"nom": "Schroder Sustainable Euro Credit A Acc",
+"famille": "Obligations haut rendement",
+"elig": true
+},
+{
+"isin": "FR001400A555",
+"nom": "Corporate Oblig Selection C",
+"famille": "Obligations EUR & crédit",
+"elig": false
+},
+{
+"isin": "FR001400KCZ1",
+"nom": "Ostrum Credit Ultra Short Plus RE",
+"famille": "Obligations EUR & crédit",
+"elig": false
+},
+{
+"isin": "FR001400MCQ6",
+"nom": "Sycoyield 2030 RC",
+"famille": NaN,
+"elig": false
+},
+{
+"isin": "FR001400M5Z5",
+"nom": "Ofi Invest High Yield 2029 A",
+"famille": NaN,
+"elig": false
+},
+{
+"isin": "FR001400NTR6",
+"nom": "Lazard High Yield 2029 RC EUR",
+"famille": NaN,
+"elig": false
+},
+{
+"isin": "FR001400OWY4",
+"nom": "SLF (France) Bond ESG 6M P2",
+"famille": "Obligations court terme & inflation",
+"elig": false
+},
+{
+"isin": "FR001400QNM3",
+"nom": "FF Cap 2029 C",
+"famille": NaN,
+"elig": false
+},
+{
+"isin": "FR001400S680",
+"nom": "EdR SICAV Millesima 2030 A EUR",
+"famille": NaN,
+"elig": false
+},
+{
+"isin": "FR001400TGU4",
+"nom": "Sextant Optimal Income A Acc",
+"famille": "Obligations flexibles",
+"elig": false
+},
+{
+"isin": "FR001400S409",
+"nom": "Sextant Regatta 2031 A",
+"famille": NaN,
+"elig": false
+},
+{
+"isin": "FR001400U4S3",
+"nom": "Carmignac Credit 2031 A EUR Acc",
+"famille": NaN,
+"elig": false
+},
+{
+"isin": "FR001400X201",
+"nom": "Ofi Invest Green Bonds Euro R",
+"famille": "Obligations EUR & crédit",
+"elig": false
+},
+{
+"isin": "FR001400ZC76",
+"nom": "FF CAP 2031 R",
+"famille": NaN,
+"elig": false
+},
+{
+"isin": "FR0014010IG3",
+"nom": "Sycoyield 2032 RC",
+"famille": NaN,
+"elig": false
+},
+{
+"isin": "FR0014013NN3",
+"nom": "Keren 2032 C",
+"famille": NaN,
+"elig": false
+},
+{
+"isin": "FR0000097503",
+"nom": "Ofi Invest Rendement Europe C/D",
+"famille": "Obligations EUR & crédit",
+"elig": true
+},
+{
+"isin": "LU0330917963",
+"nom": "BlackRock US Dollar H-Y Bd A2 H",
+"famille": "Obligations haut rendement",
+"elig": true
+},
+{
+"isin": "LU0352160062",
+"nom": "UBAM Med Term US Corporate Bond AHC EUR",
+"famille": "Obligations EUR & crédit",
+"elig": true
+},
+{
+"isin": "LU1880401101",
+"nom": "Amundi Funds US Bond A EUR C",
+"famille": "Obligations EUR & crédit",
+"elig": true
+},
+{
+"isin": "LU1880401366",
+"nom": "Amundi Funds US Bond A EUR H C",
+"famille": "Obligations EUR & crédit",
+"elig": true
+},
+{
+"isin": "LU3051934373",
+"nom": "BGF US Dollar High Yield Bond A2 EUR",
+"famille": "Obligations haut rendement",
+"elig": false
+},
+{
+"isin": "LU3047990729",
+"nom": "UBAM Medium Term US Corp Bond AC EUR",
+"famille": "Obligations EUR & crédit",
+"elig": false
+},
+{
+"isin": "FR0014010TQ9",
+"nom": "Sunny US Corporate 2031 R",
+"famille": NaN,
+"elig": false
+},
+{
+"isin": "LU0736563114",
+"nom": "AB Emerging Market Corpo Debt A2 EUR H",
+"famille": "Obligations haut rendement",
+"elig": true
+},
+{
+"isin": "FR001400SJA2",
+"nom": "IVO IG 2030 R",
+"famille": NaN,
+"elig": false
+},
+{
+"isin": "LU3094327973",
+"nom": "IVO EM Corp Debt Short Dur SRI EUR-P",
+"famille": "Obligations émergentes",
+"elig": false
+},
+{
+"isin": "FR0000014292",
+"nom": "Ofi Invest Convertibles Monde C",
+"famille": "Diversifiés équilibrés",
+"elig": true
+},
+{
+"isin": "LU0171288334",
+"nom": "BGF Systematic Global SmallCap A2 EUR",
+"famille": "Actions internationales",
+"elig": true
+},
+{
+"isin": "LU0270904781",
+"nom": "Pictet Security P EUR Acc",
+"famille": "Autres actions sectorielles",
+"elig": true
+},
+{
+"isin": "BE0946564383",
+"nom": "DPAM B Equities NewGems Sust B EUR",
+"famille": "Autres actions sectorielles",
+"elig": true
+},
+{
+"isin": "FR0010148981",
+"nom": "Carmignac Investissement A EUR Acc",
+"famille": "Actions internationales",
+"elig": true
+},
+{
+"isin": "FR0000284689",
+"nom": "Comgest Monde C",
+"famille": "Actions internationales",
+"elig": true
+},
+{
+"isin": "LU0187079347",
+"nom": "Robeco Global Consumer Trends D EUR Acc",
+"famille": "Autres actions sectorielles",
+"elig": true
+},
+{
+"isin": "FR0010859769",
+"nom": "SICAV Echiquier World Equity Growth A",
+"famille": "Actions internationales",
+"elig": true
+},
+{
+"isin": "LU0605515377",
+"nom": "FF Global Dividend Fund A Acc EUR H",
+"famille": "Actions internationales",
+"elig": true
+},
+{
+"isin": "LU0914729966",
+"nom": "MirovaFd Mirova Gbl Sust Equity R/A EUR",
+"famille": "Thématiques environnement & infra.",
+"elig": true
+},
+{
+"isin": "FR0011586544",
+"nom": "Ofi Invest Grandes Marques A",
+"famille": "Autres actions sectorielles",
+"elig": true
+},
+{
+"isin": "LU0157178582",
+"nom": "JPM IF Global Select Equity A Acc EUR",
+"famille": "Actions US",
+"elig": true
+},
+{
+"isin": "LU1261432659",
+"nom": "FF World Fund A Acc EUR",
+"famille": "Actions internationales",
+"elig": true
+},
+{
+"isin": "LU1437676635",
+"nom": "Pictet Gbl Thematic Opp P EUR",
+"famille": "Autres actions sectorielles",
+"elig": true
+},
+{
+"isin": "LU1670710075",
+"nom": "M&G Lux Global Dividend Fund A EUR Acc",
+"famille": "Actions internationales",
+"elig": true
+},
+{
+"isin": "LU1863263346",
+"nom": "DWS Artificial Intelligence LC",
+"famille": "Thématiques tech & santé",
+"elig": true
+},
+{
+"isin": "LU1902443420",
+"nom": "CPR Invest Climate Action A EUR Acc",
+"famille": "Thématiques environnement & infra.",
+"elig": true
+},
+{
+"isin": "LU1919842267",
+"nom": "ODDO BHF Artificial Intelligence CR-EUR",
+"famille": "Thématiques tech & santé",
+"elig": true
+},
+{
+"isin": "LU1951204046",
+"nom": "NIF Lux I Mirova Thematic Meta R/A EUR",
+"famille": "Autres actions sectorielles",
+"elig": true
+},
+{
+"isin": "LU1883320993",
+"nom": "Amundi Funds Gbl Eq Inc Se A2 EUR C",
+"famille": "Actions internationales",
+"elig": true
+},
+{
+"isin": "LU2124190872",
+"nom": "First Eagle Amundi Resil Eq Fd AE C",
+"famille": "Diversifiés dynamiques",
+"elig": true
+},
+{
+"isin": "LU2389405080",
+"nom": "CPR Invest Hydrogen A EUR Acc",
+"famille": "Thématiques environnement & infra.",
+"elig": false
+},
+{
+"isin": "LU2466448532",
+"nom": "Echiquier Space B",
+"famille": "Actions internationales",
+"elig": true
+},
+{
+"isin": "FR0014008M99",
+"nom": "R-co Thematic Blockchain Global Eq C EUR",
+"famille": "Thématiques tech & santé",
+"elig": false
+},
+{
+"isin": "FR0014009IH3",
+"nom": "Ofi Invest Révolution Démo Monde A",
+"famille": "Autres actions sectorielles",
+"elig": false
+},
+{
+"isin": "LU2702915468",
+"nom": "Ofi Invest Biodiversity Gbl Equity R-C",
+"famille": "Thématiques environnement & infra.",
+"elig": false
+},
+{
+"isin": "LU2722195596",
+"nom": "Varenne Conviction A-EUR",
+"famille": "Actions internationales",
+"elig": false
+},
+{
+"isin": "FR001400ODK3",
+"nom": "Flornoy Valeurs Familiales V",
+"famille": "Autres actions sectorielles",
+"elig": false
+},
+{
+"isin": "IE0004UG0UZ9",
+"nom": "Neuberger Gb Equity Megat Fd A EUR C",
+"famille": "Autres actions sectorielles",
+"elig": false
+},
+{
+"isin": "FR001400SC42",
+"nom": "IAM Artificial Intelligence A",
+"famille": "Thématiques tech & santé",
+"elig": false
+},
+{
+"isin": "LU2944844427",
+"nom": "FAST Global Fund RA Acc EUR",
+"famille": "Actions internationales",
+"elig": false
+},
+{
+"isin": "FR001400X0N9",
+"nom": "Canopée Dynamique C",
+"famille": "Diversifiés dynamiques",
+"elig": false
+},
+{
+"isin": "FR0007076930",
+"nom": "Centifolia C",
+"famille": "Actions France",
+"elig": true
+},
+{
+"isin": "FR0010505578",
+"nom": "EdR SICAV Euro Sustainable Equ A EUR",
+"famille": "Actions Europe",
+"elig": true
+},
+{
+"isin": "FR0007022108",
+"nom": "Ofi Invest Actions Euro A",
+"famille": "Actions zone euro",
+"elig": true
+},
+{
+"isin": "FR0007385000",
+"nom": "Ofi Invest France Opportunités",
+"famille": "Actions France",
+"elig": true
+},
+{
+"isin": "FR0007473798",
+"nom": "Ofi Invest ISR Actions Europe EUR",
+"famille": "Actions Europe",
+"elig": true
+},
+{
+"isin": "FR0010298596",
+"nom": "Moneta Multi Caps C",
+"famille": "Actions France",
+"elig": true
+},
+{
+"isin": "IE0004766675",
+"nom": "Comgest Growth Europe EUR Acc",
+"famille": "Actions Europe",
+"elig": true
+},
+{
+"isin": "FR0010651224",
+"nom": "BDL Convictions C",
+"famille": "Actions Europe",
+"elig": true
+},
+{
+"isin": "FR0010547869",
+"nom": "Sextant PME A",
+"famille": "Actions Europe",
+"elig": true
+},
+{
+"isin": "FR0000298721",
+"nom": "Cybèle Actions Europe Rendement P",
+"famille": "Actions Europe",
+"elig": true
+},
+{
+"isin": "FR0000989758",
+"nom": "ODDO BHF European High Dividend CR-EUR",
+"famille": "Actions Europe",
+"elig": true
+},
+{
+"isin": "FR0000989899",
+"nom": "ODDO BHF Avenir CR-EUR",
+"famille": "Actions Europe petites & moyennes cap.",
+"elig": true
+},
+{
+"isin": "FR0000299356",
+"nom": "Norden RC",
+"famille": "Autres actions sectorielles",
+"elig": true
+},
+{
+"isin": "LU0344046155",
+"nom": "Candriam Equities L Europ Inn C EUR Acc",
+"famille": "Actions Europe",
+"elig": true
+},
+{
+"isin": "LU0261948227",
+"nom": "FF Germany Fund A Acc EUR",
+"famille": "Actions Europe",
+"elig": true
+},
+{
+"isin": "FR0010689141",
+"nom": "Lazard Small Caps Euro R",
+"famille": "Actions Europe petites & moyennes cap.",
+"elig": true
+},
+{
+"isin": "FR0010821462",
+"nom": "Ofi Invest ESG Mid Caps Euro A",
+"famille": "Actions Europe petites & moyennes cap.",
+"elig": true
+},
+{
+"isin": "LU0284396016",
+"nom": "DNCA Invest Value Europe A EUR",
+"famille": "Actions Europe",
+"elig": true
+},
+{
+"isin": "FR0010836163",
+"nom": "CPR Silver Age P",
+"famille": "Autres actions sectorielles",
+"elig": true
+},
+{
+"isin": "LU0489687243",
+"nom": "Mandarine Unique Small&Mid Caps Europe R",
+"famille": "Actions Europe petites & moyennes cap.",
+"elig": true
+},
+{
+"isin": "LU0131510165",
+"nom": "Independance France Small & Mid A (C)",
+"famille": "Actions Europe petites & moyennes cap.",
+"elig": true
+},
+{
+"isin": "FR0011271550",
+"nom": "Keren Essentiels C",
+"famille": "Actions France",
+"elig": true
+},
+{
+"isin": "LU0661985969",
+"nom": "JPMF Euroland Dynamic A Perf Acc EUR",
+"famille": "Actions zone euro",
+"elig": true
+},
+{
+"isin": "LU0922334643",
+"nom": "FF Nordic Fund A Acc EUR",
+"famille": "Actions Europe",
+"elig": true
+},
+{
+"isin": "FR0011891506",
+"nom": "DNCA Actions Euro PME R",
+"famille": "Actions zone euro",
+"elig": true
+},
+{
+"isin": "FR0010863688",
+"nom": "Echiquier Positive Impact Europe A",
+"famille": "Thématiques environnement & infra.",
+"elig": true
+},
+{
+"isin": "LU1209226700",
+"nom": "Ofi ESG Equity Social Focus R C",
+"famille": "Autres actions sectorielles",
+"elig": true
+},
+{
+"isin": "LU1303940784",
+"nom": "Mandarine Europe Microcap R",
+"famille": "Actions Europe petites & moyennes cap.",
+"elig": true
+},
+{
+"isin": "LU1832174962",
+"nom": "Independance Europe Small A (C)",
+"famille": "Actions Europe petites & moyennes cap.",
+"elig": true
+},
+{
+"isin": "LU1670707527",
+"nom": "M&G Lux European Strat Val Fd A EUR Acc",
+"famille": "Actions Europe",
+"elig": true
+},
+{
+"isin": "LU1616921158",
+"nom": "Eleva Euroland Selection Fd A2 EUR Acc",
+"famille": "Actions zone euro",
+"elig": true
+},
+{
+"isin": "FR0013384963",
+"nom": "CM-AM Convictions Euro RC",
+"famille": "Actions zone euro",
+"elig": true
+},
+{
+"isin": "LU1985004537",
+"nom": "SSP Ofi Inv ESG Act Clim Europe A",
+"famille": "Thématiques environnement & infra.",
+"elig": true
+},
+{
+"isin": "LU1988108350",
+"nom": "BDL Transitions Megatrends C",
+"famille": "Actions Europe",
+"elig": true
+},
+{
+"isin": "LU2570611322",
+"nom": "CPR Invest Europ Strat Autonomy A EURAcc",
+"famille": "Actions zone euro",
+"elig": false
+},
+{
+"isin": "FR001400N756",
+"nom": "Amplegest Pricing Power PC",
+"famille": "Actions Europe",
+"elig": false
+},
+{
+"isin": "FR001400ODD8",
+"nom": "Flornoy Convictions V",
+"famille": "Actions Europe",
+"elig": false
+},
+{
+"isin": "LU2798962978",
+"nom": "Independance Europe Mid A",
+"famille": "Actions Europe petites & moyennes cap.",
+"elig": false
+},
+{
+"isin": "FR001400NRP4",
+"nom": "RICHELIEU FAMILY",
+"famille": "Actions Europe",
+"elig": false
+},
+{
+"isin": "FR001400QDK8",
+"nom": "Gay-Lussac Microcaps Europe A",
+"famille": "Actions Europe petites & moyennes cap.",
+"elig": true
+},
+{
+"isin": "FR001400YJK9",
+"nom": "Abeille La Fabrique Emploi Dynamique RC",
+"famille": "Autres actions sectorielles",
+"elig": false
+},
+{
+"isin": "FR0014010443",
+"nom": "Lazard Sovereignty Europe RVC EUR",
+"famille": "Actions Europe",
+"elig": false
+},
+{
+"isin": "LU2882333813",
+"nom": "DNCA Alphaplay Euroland Equities B",
+"famille": "Actions Europe",
+"elig": true
+},
+{
+"isin": "FR00140166K9",
+"nom": "Sanso Maxima B",
+"famille": "Actions Europe",
+"elig": false
+},
+{
+"isin": "LU0159042083",
+"nom": "JPMF America Equity A Acc EUR H",
+"famille": "Actions US",
+"elig": true
+},
+{
+"isin": "LU0281482918",
+"nom": "JPMF US Select Equity Plus A Acc EUR H",
+"famille": "Actions US",
+"elig": true
+},
+{
+"isin": "FR0007017488",
+"nom": "Ofi Invest Actions Amérique I",
+"famille": "Actions US",
+"elig": true
+},
+{
+"isin": "FR0010501858",
+"nom": "CPR Actions USA Responsable P",
+"famille": "Actions US",
+"elig": true
+},
+{
+"isin": "LU0185495495",
+"nom": "Ofi Invest US Equity R",
+"famille": "Actions US",
+"elig": true
+},
+{
+"isin": "LU0251127410",
+"nom": "FF America Fund A Acc EUR",
+"famille": "Actions US",
+"elig": true
+},
+{
+"isin": "LU0474363974",
+"nom": "Robeco BP US Large Cap Eq D EUR Acc",
+"famille": "Actions US",
+"elig": true
+},
+{
+"isin": "LU0510167264",
+"nom": "Robeco BP US Large Cap Eq DH EUR Acc",
+"famille": "Actions US",
+"elig": true
+},
+{
+"isin": "LU0251806666",
+"nom": "BNPP US Small Cap Classic H EUR Acc",
+"famille": "Actions US",
+"elig": true
+},
+{
+"isin": "LU0823410724",
+"nom": "BNPP US Small Cap Classic EUR Acc",
+"famille": "Actions US",
+"elig": true
+},
+{
+"isin": "LU0217390227",
+"nom": "JPMF America Equity A Acc EUR",
+"famille": "Actions US",
+"elig": true
+},
+{
+"isin": "LU1435385593",
+"nom": "NIF Lux I Loom Say US Grwt Eq R/A HEUR",
+"famille": "Actions US",
+"elig": true
+},
+{
+"isin": "LU1435385163",
+"nom": "NIF Lux I Loom Say US Grwt Eq R/A EUR",
+"famille": "Actions US",
+"elig": true
+},
+{
+"isin": "LU1883854199",
+"nom": "Amundi Funds US Eq Fda Gr A EUR C",
+"famille": "Actions US",
+"elig": true
+},
+{
+"isin": "LU1883854272",
+"nom": "Amundi Funds US Eq Fda Gr A EUR Hgd C",
+"famille": "Actions US",
+"elig": true
+},
+{
+"isin": "FR00140077E1",
+"nom": "CM-AM Convictions USA RC",
+"famille": "Actions US",
+"elig": false
+},
+{
+"isin": "FR001400Z990",
+"nom": "FIDES US Select Equity A",
+"famille": "Actions US",
+"elig": true
+},
+{
+"isin": "LU0476876759",
+"nom": "Abrdn Japanese Sust Equity A Hgd EUR",
+"famille": "Actions Asie-Pacifique & Japon",
+"elig": true
+},
+{
+"isin": "LU1670618187",
+"nom": "M&G Lux Asian Fund A EUR Acc",
+"famille": "Actions émergentes",
+"elig": true
+},
+{
+"isin": "LU1670626446",
+"nom": "M&G Lux Japan Fund A EUR Acc",
+"famille": "Actions Asie-Pacifique & Japon",
+"elig": true
+},
+{
+"isin": "FR0013392065",
+"nom": "Ofi Invest Actions Japon A",
+"famille": "Actions Asie-Pacifique & Japon",
+"elig": true
+},
+{
+"isin": "FR0013392073",
+"nom": "Ofi Invest Actions Japon AH",
+"famille": "Actions Asie-Pacifique & Japon",
+"elig": true
+},
+{
+"isin": "FR0010149302",
+"nom": "Carmignac Emergents A EUR Acc",
+"famille": "Actions émergentes",
+"elig": true
+},
+{
+"isin": "IE0030351732",
+"nom": "Comgest Growth China EUR Acc",
+"famille": "Actions émergentes",
+"elig": true
+},
+{
+"isin": "LU0552028184",
+"nom": "Amundi Funds Em Mkt Eq Focus A EUR C",
+"famille": "Actions émergentes",
+"elig": true
+},
+{
+"isin": "LU0582533245",
+"nom": "Robeco QI Emerging Cons Eq D EUR Acc",
+"famille": "Actions émergentes",
+"elig": true
+},
+{
+"isin": "LU0708055453",
+"nom": "HGIF Frontier Markets EC EUR",
+"famille": "Actions émergentes",
+"elig": true
+},
+{
+"isin": "LU0947062542",
+"nom": "SISF Emerging Markets A Acc EUR H",
+"famille": "Actions émergentes",
+"elig": true
+},
+{
+"isin": "LU1255011097",
+"nom": "JPMF China A-Sh Opp A Acc EUR",
+"famille": "Actions émergentes",
+"elig": true
+},
+{
+"isin": "FR00140023U1",
+"nom": "Sextant Asia Ex-Japan A",
+"famille": "Actions Asie-Pacifique & Japon",
+"elig": false
+},
+{
+"isin": "LU0171307068",
+"nom": "BGF World Healthscience Fund A2 EUR",
+"famille": "Thématiques tech & santé",
+"elig": true
+},
+{
+"isin": "LU0171310443",
+"nom": "BGF World Technology Fund A2 EUR",
+"famille": "Thématiques tech & santé",
+"elig": true
+},
+{
+"isin": "LU0280435388",
+"nom": "Pictet Clean Energy Transition P EUR Acc",
+"famille": "Thématiques environnement & infra.",
+"elig": true
+},
+{
+"isin": "LU0217139020",
+"nom": "Pictet Premium Brands P EUR Acc",
+"famille": "Autres actions sectorielles",
+"elig": true
+},
+{
+"isin": "LU0104884860",
+"nom": "Pictet Water P EUR Acc",
+"famille": "Thématiques environnement & infra.",
+"elig": true
+},
+{
+"isin": "FR0007390174",
+"nom": "CM-AM Global Gold RC",
+"famille": "Ressources & matières premières",
+"elig": true
+},
+{
+"isin": "FR0000095465",
+"nom": "Ofi Invest Actions Immo Euro A",
+"famille": "Immobilier coté",
+"elig": true
+},
+{
+"isin": "LU0823421689",
+"nom": "BNPP Disruptive Techno Classic EUR Acc",
+"famille": "Thématiques tech & santé",
+"elig": true
+},
+{
+"isin": "LU0340559557",
+"nom": "Pictet Timber P EUR Acc",
+"famille": "Thématiques environnement & infra.",
+"elig": true
+},
+{
+"isin": "FR0010664086",
+"nom": "EdR Goldsphere A EUR",
+"famille": "Ressources & matières premières",
+"elig": true
+},
+{
+"isin": "LU0159052710",
+"nom": "JPMF US Technology A Acc EUR",
+"famille": "Thématiques tech & santé",
+"elig": true
+},
+{
+"isin": "LU0503631714",
+"nom": "Pictet Gbl Env Opp P EUR Acc",
+"famille": "Thématiques environnement & infra.",
+"elig": true
+},
+{
+"isin": "FR0010668145",
+"nom": "BNP Paribas Aqua Classic",
+"famille": "Thématiques environnement & infra.",
+"elig": true
+},
+{
+"isin": "LU0914733059",
+"nom": "Mirova Them EU Environmental R/A EUR",
+"famille": "Thématiques environnement & infra.",
+"elig": true
+},
+{
+"isin": "LU1165137149",
+"nom": "BNPP SMaRT Food Classic EUR Acc",
+"famille": "Autres actions sectorielles",
+"elig": true
+},
+{
+"isin": "FR0012336683",
+"nom": "Amundi Actions Or P-C",
+"famille": "Ressources & matières premières",
+"elig": true
+},
+{
+"isin": "LU1160356009",
+"nom": "EdR Fd Healthcare A EUR",
+"famille": "Thématiques tech & santé",
+"elig": true
+},
+{
+"isin": "LU1279334210",
+"nom": "Pictet Robotics P EUR Acc",
+"famille": "Thématiques tech & santé",
+"elig": true
+},
+{
+"isin": "LU1213836080",
+"nom": "FF Global Technology Fund A EUR Acc",
+"famille": "Thématiques tech & santé",
+"elig": true
+},
+{
+"isin": "LU1819480192",
+"nom": "Echiquier Artificial Intelligence B",
+"famille": "Thématiques tech & santé",
+"elig": true
+},
+{
+"isin": "LU1844093135",
+"nom": "BNPP Disruptive Techno Classic H EUR Acc",
+"famille": "Thématiques tech & santé",
+"elig": true
+},
+{
+"isin": "IE00BZ18VZ93",
+"nom": "BNY Mellon Gbl Infras Income EUR H Acc H",
+"famille": "Autres actions sectorielles",
+"elig": true
+},
+{
+"isin": "LU1864481624",
+"nom": "Candriam Equities L Oncology C-H",
+"famille": "Thématiques tech & santé",
+"elig": true
+},
+{
+"isin": "LU1951200481",
+"nom": "NIF Lux I Mirova Them&Robotics R/A EUR",
+"famille": "Thématiques tech & santé",
+"elig": true
+},
+{
+"isin": "LU1989769036",
+"nom": "CPR Invest Global Resources A EUR Acc",
+"famille": "Ressources & matières premières",
+"elig": true
+},
+{
+"isin": "FR0013531902",
+"nom": "BNP Paribas Aqua Classic H EUR",
+"famille": "Thématiques environnement & infra.",
+"elig": true
+},
+{
+"isin": "LU2257980289",
+"nom": "Mandarine Global Transition R",
+"famille": "Thématiques environnement & infra.",
+"elig": true
+},
+{
+"isin": "FR0014008NN3",
+"nom": "Ofi Invest Energy Strategic Metals R",
+"famille": "Gestion alternative",
+"elig": false
+},
+{
+"isin": "LU2707622630",
+"nom": "DNCA Invest Strategic Resources A EUR",
+"famille": "Ressources & matières premières",
+"elig": false
+},
+{
+"isin": "FR001400RZ04",
+"nom": "EdR SICAV Global Resilience A EUR",
+"famille": "Actions internationales",
+"elig": false
+},
+{
+"isin": "LU0251119078",
+"nom": "Fidelity Target™ 2035 Fund A EUR Acc",
+"famille": NaN,
+"elig": false
+},
+{
+"isin": "LU0251120084",
+"nom": "Fidelity Target™ 2040 Fund A EUR Acc",
+"famille": NaN,
+"elig": false
+},
+{
+"isin": "LU0251131362",
+"nom": "Fidelity Target™ 2030 Fund A EUR Acc",
+"famille": NaN,
+"elig": false
+},
+{
+"isin": "LU1025014389",
+"nom": "FF Fidelity Target™ 2045 Fund A EUR Acc",
+"famille": NaN,
+"elig": false
+},
+{
+"isin": "LU1025014629",
+"nom": "FF Fidelity Target™ 2050 Fund A EUR Acc",
+"famille": NaN,
+"elig": false
+},
+{
+"isin": "FR0013284320",
+"nom": "Abeille Perspective 2026-2030",
+"famille": NaN,
+"elig": false
+},
+{
+"isin": "FR0013284338",
+"nom": "Abeille Perspective 2031-2035",
+"famille": NaN,
+"elig": false
+},
+{
+"isin": "FR0013284346",
+"nom": "Abeille Perspective 2036-2040",
+"famille": NaN,
+"elig": false
+},
+{
+"isin": "LU2218679988",
+"nom": "Fidelity Target™ 2055 Fund A EUR Acc",
+"famille": NaN,
+"elig": false
+},
+{
+"isin": "LU2218680481",
+"nom": "Fidelity Target™ 2060 Fund A EUR Acc",
+"famille": NaN,
+"elig": false
+},
+{
+"isin": "LU0393653166",
+"nom": "FF Global MA Defensive Fd A Acc EUR",
+"famille": "Diversifiés prudents",
+"elig": true
+},
+{
+"isin": "FR0013183290",
+"nom": "R-co Objectif Croissance",
+"famille": "Diversifiés prudents",
+"elig": true
+},
+{
+"isin": "DE000A2JJ1W5",
+"nom": "ODDO BHF Polaris Moderate CR-EUR",
+"famille": "Diversifiés prudents",
+"elig": true
+},
+{
+"isin": "FR001400ODB2",
+"nom": "Florinvest Plénitude V",
+"famille": NaN,
+"elig": false
+},
+{
+"isin": "FR001400Y1O4",
+"nom": "Generation Evo C",
+"famille": "Diversifiés prudents",
+"elig": false
+},
+{
+"isin": "FR0007032719",
+"nom": "Ofi Invest Equilibre Monde C EUR",
+"famille": "Diversifiés équilibrés",
+"elig": true
+},
+{
+"isin": "LU0119195963",
+"nom": "GS Patrimonial Balanced P Cap EUR",
+"famille": "Diversifiés équilibrés",
+"elig": true
+},
+{
+"isin": "FR0000937435",
+"nom": "Cybèle Equilibre C",
+"famille": "Diversifiés flexibles",
+"elig": true
+},
+{
+"isin": "FR0010564351",
+"nom": "Ofi Invest ESG MultiTrack R",
+"famille": "Diversifiés équilibrés",
+"elig": true
+},
+{
+"isin": "FR0013444734",
+"nom": "Annapurna C",
+"famille": "Diversifiés équilibrés",
+"elig": true
+},
+{
+"isin": "FR001400F9I2",
+"nom": "Moderate ETF Selection A",
+"famille": "Diversifiés équilibrés",
+"elig": false
+},
+{
+"isin": "FR001400ODA4",
+"nom": "Florinvest Equilibre SR V",
+"famille": "Diversifiés équilibrés",
+"elig": false
+},
+{
+"isin": "FR001400XCM2",
+"nom": "Florinvest Equilibre SR A",
+"famille": "Diversifiés équilibrés",
+"elig": false
+},
+{
+"isin": "FR0007032735",
+"nom": "Ofi Invest Dynamique Monde C EUR",
+"famille": "Diversifiés dynamiques",
+"elig": true
+},
+{
+"isin": "LU0119195450",
+"nom": "GS Patrimonial Aggressive P Cap EUR",
+"famille": "Diversifiés dynamiques",
+"elig": true
+},
+{
+"isin": "FR0000297632",
+"nom": "Cybèle Dynamique P",
+"famille": "Diversifiés dynamiques",
+"elig": true
+},
+{
+"isin": "FR0013183308",
+"nom": "R-co Objectif Dynamique",
+"famille": "Diversifiés dynamiques",
+"elig": true
+},
+{
+"isin": "LU1849528234",
+"nom": "ODDO BHF Exklusiv: Polaris Dynamc CR-EUR",
+"famille": "Diversifiés dynamiques",
+"elig": true
+},
+{
+"isin": "IE00BF2N0561",
+"nom": "The SEI Euro Growth Fd C Euro Wealth Acc",
+"famille": "Diversifiés dynamiques",
+"elig": true
+},
+{
+"isin": "FR0014005FO3",
+"nom": "Primerus Actions Monde SR",
+"famille": "Actions internationales",
+"elig": false
+},
+{
+"isin": "FR001400BFO7",
+"nom": "Progressia R",
+"famille": "Diversifiés dynamiques",
+"elig": false
+},
+{
+"isin": "FR001400F9H4",
+"nom": "Dynamic ETF Selection A",
+"famille": "Diversifiés dynamiques",
+"elig": false
+},
+{
+"isin": "FR0007078589",
+"nom": "Sycomore Allocation Patrimoine R",
+"famille": "Diversifiés prudents",
+"elig": true
+},
+{
+"isin": "FR0000980427",
+"nom": "Keren Patrimoine C",
+"famille": "Diversifiés prudents",
+"elig": true
+},
+{
+"isin": "FR0010557967",
+"nom": "Dorval Convictions R",
+"famille": "Diversifiés flexibles",
+"elig": true
+},
+{
+"isin": "LU0243957239",
+"nom": "Invesco Pan European High Inc A Acc EUR",
+"famille": "Diversifiés prudents",
+"elig": true
+},
+{
+"isin": "FR0010135103",
+"nom": "Carmignac Patrimoine A EUR Acc",
+"famille": "Diversifiés flexibles",
+"elig": true
+},
+{
+"isin": "FR0010147603",
+"nom": "Carmignac Invest Latitude A EUR Acc",
+"famille": "Diversifiés flexibles",
+"elig": true
+},
+{
+"isin": "FR0007032743",
+"nom": "Ofi Invest Patrimoine Monde C",
+"famille": "Diversifiés prudents",
+"elig": true
+},
+{
+"isin": "FR0011253624",
+"nom": "R-co Valor C EUR",
+"famille": "Diversifiés flexibles",
+"elig": true
+},
+{
+"isin": "FR0010541557",
+"nom": "R-co Conviction Club C EUR",
+"famille": "Diversifiés équilibrés",
+"elig": true
+},
+{
+"isin": "FR0010097683",
+"nom": "CPR Croissance Réactive P",
+"famille": "Diversifiés flexibles",
+"elig": true
+},
+{
+"isin": "FR0010097642",
+"nom": "CPR Croissance Dynamique P",
+"famille": "Diversifiés dynamiques",
+"elig": true
+},
+{
+"isin": "FR0010286013",
+"nom": "Sextant Grand Large A",
+"famille": "Diversifiés flexibles",
+"elig": true
+},
+{
+"isin": "FR0007028543",
+"nom": "Lazard Patrimoine Opport SRI RC EUR",
+"famille": "Diversifiés équilibrés",
+"elig": true
+},
+{
+"isin": "FR0010611293",
+"nom": "SICAV Echiquier Arty SRI A",
+"famille": "Diversifiés flexibles",
+"elig": true
+},
+{
+"isin": "FR0010746776",
+"nom": "Ofi Invest ISR Croissance Responsable A",
+"famille": "Diversifiés équilibrés",
+"elig": true
+},
+{
+"isin": "LU0284394235",
+"nom": "DNCA Invest Eurose A EUR",
+"famille": "Diversifiés prudents",
+"elig": true
+},
+{
+"isin": "LU0599946893",
+"nom": "DWS Concept Kaldemorgen LC",
+"famille": "Diversifiés équilibrés",
+"elig": true
+},
+{
+"isin": "LU0941349275",
+"nom": "Pictet Multi Asset Gbl Opp R EUR Acc",
+"famille": "Diversifiés prudents",
+"elig": true
+},
+{
+"isin": "LU0992632538",
+"nom": "EdR Fd Income Europe A EUR",
+"famille": "Diversifiés prudents",
+"elig": true
+},
+{
+"isin": "FR0012355139",
+"nom": "Lazard Patrimoine SRI RC EUR",
+"famille": "Diversifiés flexibles",
+"elig": true
+},
+{
+"isin": "FR0013183316",
+"nom": "R-co Objectif Harmonie",
+"famille": "Diversifiés flexibles",
+"elig": true
+},
+{
+"isin": "LU1514035655",
+"nom": "LO Funds All Roads Conservative EUR PA",
+"famille": "Diversifiés prudents",
+"elig": true
+},
+{
+"isin": "FR0013333838",
+"nom": "Dorval Global Conservative R",
+"famille": "Diversifiés flexibles",
+"elig": true
+},
+{
+"isin": "FR0013318136",
+"nom": "Panorama Patrimoine R",
+"famille": "Diversifiés flexibles",
+"elig": true
+},
+{
+"isin": "FR0013367281",
+"nom": "R-co Valor Balanced F EUR",
+"famille": "Diversifiés flexibles",
+"elig": true
+},
+{
+"isin": "LU1849527939",
+"nom": "ODDO BHF Exklusiv: Polaris Balanc CR-EUR",
+"famille": "Diversifiés équilibrés",
+"elig": true
+},
+{
+"isin": "LU1874836890",
+"nom": "ODDO BHF Polaris Flexible CR-EUR",
+"famille": "Diversifiés flexibles",
+"elig": true
+},
+{
+"isin": "FR0013466455",
+"nom": "Synergies All Process",
+"famille": "Diversifiés équilibrés",
+"elig": true
+},
+{
+"isin": "FR0013511425",
+"nom": "Atlas Evimeria C EUR",
+"famille": "Diversifiés flexibles",
+"elig": true
+},
+{
+"isin": "FR0013516283",
+"nom": "Trianon Investissement C EUR",
+"famille": "Diversifiés équilibrés",
+"elig": true
+},
+{
+"isin": "FR0013526464",
+"nom": "Esperluette Privilège C",
+"famille": "Diversifiés prudents",
+"elig": true
+},
+{
+"isin": "LU2147879543",
+"nom": "Tikehau International Cross Assets RAcc€",
+"famille": "Diversifiés flexibles",
+"elig": true
+},
+{
+"isin": "FR0014001KV7",
+"nom": "Hegoa RC EUR",
+"famille": "Diversifiés flexibles",
+"elig": true
+},
+{
+"isin": "LU2358392376",
+"nom": "Varenne Valeur A EUR",
+"famille": "Gestion alternative",
+"elig": true
+},
+{
+"isin": "FR0014009CE3",
+"nom": "Canopée Equilibre C",
+"famille": "Diversifiés équilibrés",
+"elig": false
+},
+{
+"isin": "FR001400AU57",
+"nom": "Porteurs d'Espérance CL",
+"famille": "Diversifiés flexibles",
+"elig": false
+},
+{
+"isin": "FR001400AR03",
+"nom": "R-co Etoile C EUR",
+"famille": "Diversifiés équilibrés",
+"elig": false
+},
+{
+"isin": "FR001400G6L1",
+"nom": "Cap Convictions C",
+"famille": "Diversifiés flexibles",
+"elig": false
+},
+{
+"isin": "FR001400IPY0",
+"nom": "Opt'In Selection Performance A",
+"famille": "Diversifiés flexibles",
+"elig": false
+},
+{
+"isin": "FR001400ODG1",
+"nom": "Gambetta Patrimoine V",
+"famille": NaN,
+"elig": false
+},
+{
+"isin": "FR001400PEL6",
+"nom": "Global Sélection Dynamique C EUR",
+"famille": "Diversifiés flexibles",
+"elig": false
+},
+{
+"isin": "FR001400M840",
+"nom": "Constantia Rendement R",
+"famille": "Diversifiés flexibles",
+"elig": false
+},
+{
+"isin": "FR001400QKQ0",
+"nom": "Generation Alpha C",
+"famille": "Diversifiés prudents",
+"elig": false
+},
+{
+"isin": "FR001400VTM0",
+"nom": "KS Quant Return C",
+"famille": "Diversifiés flexibles",
+"elig": false
+},
+{
+"isin": "FR001400Z9C1",
+"nom": "R-co Esis C EUR",
+"famille": "Diversifiés flexibles",
+"elig": false
+},
+{
+"isin": "FR001400Z9B3",
+"nom": "FIDES Valor A",
+"famille": "Diversifiés flexibles",
+"elig": true
+},
+{
+"isin": "FR0014010054",
+"nom": "Sigma Dynamique",
+"famille": "Diversifiés dynamiques",
+"elig": false
+},
+{
+"isin": "FR001400ZKE7",
+"nom": "Porteurs d'Espérance FSI-A",
+"famille": "Diversifiés flexibles",
+"elig": false
+},
+{
+"isin": "FR0014012T70",
+"nom": "Bastion Valeur C",
+"famille": "Diversifiés flexibles",
+"elig": false
+},
+{
+"isin": "FR0014012F19",
+"nom": "Alternative Patrimoine Global C",
+"famille": "Diversifiés flexibles",
+"elig": false
+},
+{
+"isin": "FR0010149179",
+"nom": "Carmignac Absolut Return Europ A € Acc",
+"famille": "Gestion alternative",
+"elig": true
+},
+{
+"isin": "FR0010174144",
+"nom": "BDL Rempart C",
+"famille": "Gestion alternative",
+"elig": true
+},
+{
+"isin": "FR0010400762",
+"nom": "Moneta Long Short A",
+"famille": "Gestion alternative",
+"elig": true
+},
+{
+"isin": "FR0010811984",
+"nom": "Ofi Inv Opport Obligataires Monde A",
+"famille": "Obligations EUR & crédit",
+"elig": true
+},
+{
+"isin": "LU0641745921",
+"nom": "DNCA Invest One A EUR",
+"famille": "Gestion alternative",
+"elig": true
+},
+{
+"isin": "LU1331971769",
+"nom": "Eleva Absolute Return Europe A1 EUR Acc",
+"famille": "Gestion alternative",
+"elig": true
+},
+{
+"isin": "LU1112771503",
+"nom": "Helium Selection B-EUR",
+"famille": "Gestion alternative",
+"elig": true
+},
+{
+"isin": "LU1694789535",
+"nom": "DNCA Invest Alpha Bonds B EUR",
+"famille": "Obligations flexibles",
+"elig": true
+},
+{
+"isin": "LU2206556016",
+"nom": "Pictet TR Atlas Titan P EUR",
+"famille": "Gestion alternative",
+"elig": true
+},
+{
+"isin": "LU2722194946",
+"nom": "Varenne Long Short A-EUR",
+"famille": "Gestion alternative",
+"elig": false
+},
+{
+"isin": "FR001400VTX7",
+"nom": "Charentes Equicroissance",
+"famille": "Diversifiés équilibrés",
+"elig": false
+},
+{
+"isin": "FR001400XSA3",
+"nom": "DBL Avenir Patrimoine",
+"famille": "Diversifiés équilibrés",
+"elig": false
+},
+{
+"isin": "FR001400Z982",
+"nom": "FIDES Rempart A",
+"famille": "Gestion alternative",
+"elig": true
+},
+{
+"isin": "FR0014015F99",
+"nom": "Orizon Equilibre",
+"famille": "Diversifiés flexibles",
+"elig": false
+},
+{
+"isin": "FR0011170182",
+"nom": "Ofi Invest Precious Metals R",
+"famille": "Ressources & matières premières",
+"elig": true
+},
+{
+"isin": "FR0013418761",
+"nom": "Ofi Invest ISR Experimmo A ISR",
+"famille": "Immobilier non coté",
+"elig": true
+}
+]
