@@ -21,7 +21,7 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from scan import historique  # noqa: E402  (même accès Yahoo que le scan mensuel)
+from scan import historique, chercher_symbole  # noqa: E402  (même accès Yahoo que le scan mensuel)
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
@@ -39,15 +39,24 @@ def main() -> None:
     univers = json.loads((DATA / "univers.json").read_text("utf-8"))
     seuils = json.loads((DATA / "regles.json").read_text("utf-8"))["seuils"]
     fonds = [f for f in univers if f.get("note_annuelle") is not None and f.get("famille") in seuils]
+    # UC Abeille classées : mêmes familles, mêmes seuils (les fonds communs aux deux contrats ne sont mesurés qu'une fois)
+    ab_path = DATA / "abeille_univers.json"
+    if ab_path.exists():
+        vus = {f["isin"] for f in fonds}
+        fonds += [f for f in json.loads(ab_path.read_text("utf-8")) if f.get("elig") and f.get("famille") in seuils and f["isin"] not in vus]
 
     if offline:
         W = json.loads((ROOT / "tests" / "cache" / "weekly.json").read_text())
         prix = {i: pd.Series(v, pd.date_range(s, periods=len(v), freq="7D"), dtype=float).ffill() for i, (s, v) in W.items()}
     else:
         carte = json.loads((DATA / "yahoo_map.json").read_text("utf-8"))
-        prix = {}
+        prix, today, nouveaux = {}, dt.date.today(), 0
         for k, f in enumerate(fonds, 1):
-            sym = (carte.get(f["isin"]) or {}).get("s")
+            e = carte.get(f["isin"])
+            if e is None or (e.get("s") is None and (today - dt.date.fromisoformat(e.get("d", "2000-01-01"))).days > 90):
+                carte[f["isin"]] = e = {"s": chercher_symbole(f["isin"]), "d": today.isoformat()}
+                nouveaux += 1
+            sym = e.get("s")
             if sym:
                 p = historique(sym, "1y")
                 if p is not None:
@@ -55,6 +64,9 @@ def main() -> None:
                 time.sleep(0.25)
             if k % 100 == 0:
                 print(f"  {k}/{len(fonds)} fonds traités, {len(prix)} avec cotations")
+        if nouveaux:
+            (DATA / "yahoo_map.json").write_text(json.dumps(carte, ensure_ascii=False, indent=0), "utf-8")
+            print(f"  {nouveaux} nouvelles cotations recherchées")
 
     dds: dict[str, float] = {}
     for f in fonds:
