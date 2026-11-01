@@ -60,25 +60,17 @@
    "top": [
     "IE00BLP5S460",
     "LU1001747408",
-    "FR0010174144"
+    "FR0010400762"
    ],
-   "attente": {
-    "isin": "FR0010400762",
-    "n": 1,
-    "mois": "2026-10"
-   }
+   "attente": null
   },
   "Diversifiés prudents": {
    "top": [
     "LU0284394235",
     "FR0011668730",
-    "LU1250158166"
+    "FR0010177899"
    ],
-   "attente": {
-    "isin": "FR0010177899",
-    "n": 1,
-    "mois": "2026-10"
-   }
+   "attente": null
   },
   "Diversifiés équilibrés": {
    "top": [
@@ -86,19 +78,19 @@
     "FR0013183290",
     "FR0011538818"
    ],
-   "attente": null
+   "attente": {
+    "isin": "FR0000981458",
+    "n": 1,
+    "mois": "2026-11"
+   }
   },
   "Diversifiés flexibles": {
    "top": [
     "FR0011153014",
     "LU1100076550",
-    "FR0011261197"
+    "FR0010147603"
    ],
-   "attente": {
-    "isin": "FR0010147603",
-    "n": 1,
-    "mois": "2026-10"
-   }
+   "attente": null
   },
   "Diversifiés dynamiques": {
    "top": [
@@ -120,25 +112,17 @@
    "top": [
     "LU0165074666",
     "FR0010632364",
-    "FR0000004970"
+    "FR0010458745"
    ],
-   "attente": {
-    "isin": "FR0010458745",
-    "n": 1,
-    "mois": "2026-10"
-   }
+   "attente": null
   },
   "Actions Europe": {
    "top": [
     "LU1670707527",
     "LU0048588080",
-    "LU0072462186"
+    "FR0010586024"
    ],
-   "attente": {
-    "isin": "FR0010586024",
-    "n": 1,
-    "mois": "2026-10"
-   }
+   "attente": null
   },
   "Actions Europe petites & moyennes cap.": {
    "top": [
@@ -154,23 +138,15 @@
     "LU0211333025",
     "FR0000438905"
    ],
-   "attente": {
-    "isin": "LU1434527435",
-    "n": 1,
-    "mois": "2026-10"
-   }
+   "attente": null
   },
   "Actions US": {
    "top": [
     "FR0010501858",
     "FR0000447807",
-    "FR0011212547"
+    "FR0013342318"
    ],
-   "attente": {
-    "isin": "FR0013342318",
-    "n": 1,
-    "mois": "2026-10"
-   }
+   "attente": null
   },
   "Actions Asie-Pacifique & Japon": {
    "top": [
@@ -222,15 +198,11 @@
   },
   "Immobilier coté": {
    "top": [
-    "FR0011885797",
+    "FR0011694256",
     "FR0010541821",
     "FR0013528478"
    ],
-   "attente": {
-    "isin": "FR0011694256",
-    "n": 1,
-    "mois": "2026-10"
-   }
+   "attente": null
   },
   "Capital investissement": {
    "top": [
@@ -251,6 +223,76 @@
  },
  "journal": [
   {
+   "date": "2026-11-01",
+   "famille": "Gestion alternative",
+   "entre": "Moneta Long Short A",
+   "entre_isin": "FR0010400762",
+   "note_entre": 73,
+   "sort": "BDL Rempart C",
+   "sort_isin": "FR0010174144",
+   "note_sort": 67
+  },
+  {
+   "date": "2026-11-01",
+   "famille": "Diversifiés prudents",
+   "entre": "Choix Solidaire C",
+   "entre_isin": "FR0010177899",
+   "note_entre": 75,
+   "sort": "Auris Diversified Beta R Cap",
+   "sort_isin": "LU1250158166",
+   "note_sort": 67
+  },
+  {
+   "date": "2026-11-01",
+   "famille": "Diversifiés flexibles",
+   "entre": "Carmignac Investissement Lat A EUR Acc",
+   "entre_isin": "FR0010147603",
+   "note_entre": 79,
+   "sort": "R-co Valor F EUR",
+   "sort_isin": "FR0011261197",
+   "note_sort": 72
+  },
+  {
+   "date": "2026-11-01",
+   "famille": "Actions zone euro",
+   "entre": "Amundi Actions Euro Responsable P C",
+   "entre_isin": "FR0010458745",
+   "note_entre": 76,
+   "sort": "Ecofi Smart Transition R",
+   "sort_isin": "FR0000004970",
+   "note_sort": 69
+  },
+  {
+   "date": "2026-11-01",
+   "famille": "Actions Europe",
+   "entre": "Lazard Dividend C",
+   "entre_isin": "FR0010586024",
+   "note_entre": 85,
+   "sort": "BGF European Value A2",
+   "sort_isin": "LU0072462186",
+   "note_sort": 78
+  },
+  {
+   "date": "2026-11-01",
+   "famille": "Actions US",
+   "entre": "Tocqueville US Equity SRI L",
+   "entre_isin": "FR0013342318",
+   "note_entre": 76,
+   "sort": "RMM Actions USA C EUR",
+   "sort_isin": "FR0011212547",
+   "note_sort": 69
+  },
+  {
+   "date": "2026-11-01",
+   "famille": "Immobilier coté",
+   "entre": "Tikehau Listed Real Estate P",
+   "entre_isin": "FR0011694256",
+   "note_entre": 68,
+   "sort": "R-co Thematic Real Estate F",
+   "sort_isin": "FR0011885797",
+   "note_sort": 58
+  },
+  {
    "date": "2026-10-08",
    "famille": "Actions émergentes",
    "entre": "Lazard Actions Emergentes R",
@@ -262,5 +304,5 @@
    "manuel": true
   }
  ],
- "dernier_scan": "2026-10"
+ "dernier_scan": "2026-11"
 }
